@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Biofuel\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: Lokrates\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: init.lua
+msgid "loading..."
+msgstr "lade..."
+
+#: init.lua
+msgid "progress: @1%"
+msgstr "Fortschritt: @1%"
+
+#: init.lua
+msgid "To start fuel production add biomass "
+msgstr "Zur Treibstoffproduktion mit organischem Material befüllen "
+
+#: init.lua
+msgid " moves stuff to refinery at "
+msgstr " legte Material in die Raffinerie bei "
+
+#: init.lua
+msgid " takes stuff from refinery at "
+msgstr " nahm Material aus der Raffinerie bei "
+
+#: init.lua
+msgid "Biofuel Refinery"
+msgstr "Biotreibstoff Raffinerie"
+
+#: init.lua
+msgid "Biofuel Refinery Active"
+msgstr "Biotreibstoff Raffinerie arbeitet"
+
+#: init.lua
+msgid " loaded."
+msgstr " geladen."
+
+#: init.lua
+msgid " Bottle Fuel "
+msgstr " Treibstofflasche "
+
+#: init.lua
+msgid " Fuel Canister "
+msgstr " Treibstoffkanister "

@@ -1,0 +1,42 @@
+msgid ""
+msgstr ""
+
+#: init.lua
+msgid "loading..."
+msgstr ""
+
+#: init.lua
+msgid "progress: @1%"
+msgstr ""
+
+#: init.lua
+msgid "To start fuel production add biomass "
+msgstr ""
+
+#: init.lua
+msgid " moves stuff to refinery at "
+msgstr ""
+
+#: init.lua
+msgid " takes stuff from refinery at "
+msgstr ""
+
+#: init.lua
+msgid "Biofuel Refinery"
+msgstr ""
+
+#: init.lua
+msgid "Biofuel Refinery Active"
+msgstr ""
+
+#: init.lua
+msgid " loaded."
+msgstr ""
+
+#: init.lua
+msgid " Bottle Fuel "
+msgstr ""
+
+#: init.lua
+msgid " Fuel Canister "
+msgstr ""
