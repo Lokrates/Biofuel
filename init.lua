@@ -193,6 +193,12 @@ local function on_rightclick(pos, node, clicker, itemstack)
 end
 
 local function can_dig(pos,player)
+
+	if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+		-- protected
+		return false
+	end
+
 	local meta = minetest.get_meta(pos)
 	local inv  = meta:get_inventory()
 	if inv:is_empty('src') and inv:is_empty('dst') then
@@ -202,7 +208,22 @@ local function can_dig(pos,player)
 	end
 end
 
+local function allow_metadata_inventory_take(pos, listname, index, stack, player)
+	if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+		-- protected
+		return 0
+	end
+
+	return stack:get_count()
+end
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
+
+	if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+		-- protected
+		return 0
+	end
+
 	if listname == 'src' and is_convertible(stack:get_name()) then
 		return stack:get_count()
 	else
@@ -225,6 +246,12 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 end
 
 local function allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
+
+	if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
+		-- protected
+		return 0
+	end
+
 	local inv = minetest.get_meta(pos):get_inventory()
 	if from_list == to_list then
 		return inv:get_stack(from_list, from_index):get_count()
@@ -273,6 +300,7 @@ minetest.register_node("biofuel:refinery", {
 	can_dig = can_dig,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
+	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_put = on_metadata_inventory_put,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 })
@@ -317,6 +345,7 @@ minetest.register_node("biofuel:refinery_active", {
 	can_dig = can_dig,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
+	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_put = on_metadata_inventory_put,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 })
