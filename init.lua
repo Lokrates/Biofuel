@@ -9,6 +9,15 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+-- pipeworks compat
+local has_pipeworks = minetest.get_modpath("pipeworks")
+local tube_entry = ""
+
+if has_pipeworks then
+	tube_entry = "^pipeworks_tube_connection_wooden.png"
+end
+
+
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.1'
 
@@ -208,6 +217,27 @@ local function can_dig(pos,player)
 	end
 end
 
+local tube = {
+	insert_object = function(pos, node, stack, direction)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		local result = inv:add_item("src", stack)
+		update_timer(pos)
+		update_nodebox(pos)
+		return result
+	end,
+	can_insert = function(pos, node, stack, direction)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		stack = stack:peek_item(1)
+
+		return is_convertible(stack:get_name()) and inv:room_for_item("src", stack)
+	end,
+	input_inventory = "dst",
+	connect_sides = {bottom = 1}
+}
+
+
 local function allow_metadata_inventory_take(pos, listname, index, stack, player)
 	if player and player:is_player() and minetest.is_protected(pos, player:get_player_name()) then
 		-- protected
@@ -265,7 +295,7 @@ minetest.register_node("biofuel:refinery", {
 	drawtype = "nodebox",
 		tiles = {
 			"biofuel_tb.png",       -- top
-			"biofuel_tb.png",       -- bottom
+			"biofuel_tb.png" .. tube_entry,       -- bottom
 			"biofuel_fr.png",       -- right
 			"biofuel_bl.png",       -- left
 			"biofuel_bl.png",       -- back
@@ -292,12 +322,13 @@ minetest.register_node("biofuel:refinery", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	groups = {cracky = 3, oddly_breakable_by_hand=1},
+	groups = {cracky = 3, oddly_breakable_by_hand=1, tubedevice=1, tubedevice_receiver=1},
 	sounds = default.node_sound_metal_defaults(),
 	on_timer = on_timer,
 	on_construct = on_construct,
 	on_rightclick = on_rightclick,
 	can_dig = can_dig,
+	tube = tube,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
@@ -310,7 +341,7 @@ minetest.register_node("biofuel:refinery_active", {
 	drawtype = "nodebox",
 		tiles = {
 			"biofuel_tb.png",    		   -- top
-			"biofuel_tb.png",      		   -- bottom
+			"biofuel_tb.png" .. tube_entry,      		   -- bottom
 			"biofuel_fr_active.png",       -- right
 			"biofuel_bl_active.png",       -- left
 			"biofuel_bl_active.png",       -- back
@@ -337,12 +368,13 @@ minetest.register_node("biofuel:refinery_active", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	groups = {cracky = 3, oddly_breakable_by_hand=1, not_in_creative_inventory = 1},
+	groups = {cracky = 3, oddly_breakable_by_hand=1, not_in_creative_inventory = 1, tubedevice=1, tubedevice_receiver=1},
 	sounds = default.node_sound_metal_defaults(),
 	on_timer = on_timer,
 	on_construct = on_construct,
 	on_rightclick = on_rightclick,
 	can_dig = can_dig,
+	tube = tube,
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
