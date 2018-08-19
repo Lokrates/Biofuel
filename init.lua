@@ -42,6 +42,8 @@ biomass.convertible_nodes = {
 	'farming:flour',
 	'farming:bread',
 	'farming:string',
+	'pooper:poop_turd',
+	'pooper:poop_pile',
 }
 biomass.convertible_items = {}
 for _, v in pairs(biomass.convertible_nodes) do
