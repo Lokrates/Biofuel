@@ -17,3 +17,7 @@ biofuel_tb.png = default_steel_block (Createt by Gambit) (WTFPL)
 biofuel_bottle_fuel.png ~ vessels_glass_bottle.png (minetest_game) (CC BY-SA 3.0)
 
 Other Textures by Lokrates (CC BY-SA 4.0)
+
+**Installation:**
+
+Unzip, rename to 'biofuel' and copy to 'minetest/mod'-folder
