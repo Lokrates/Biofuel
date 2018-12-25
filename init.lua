@@ -29,6 +29,8 @@ biomass.convertible_nodes = {
 	'default:dry_shrub',
 	'farming:wheat',
 	'farming:seed_wheat',
+	'farming:seed_hemp',
+	'farming:hemp_leaf',
 	'farming:straw',
 	'farming:cotton',
 	'farming:seed_cotton',
