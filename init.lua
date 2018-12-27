@@ -1,9 +1,10 @@
 --File name: init.lua
---Project name: compost, a Mod for Minetest
+--Project name: Biofuel, a Mod for Minetest
 --License: General Public License, version 3 or later
 --Original Work Copyright (C) 2016 cd2 (cdqwertz) <cdqwertz@gmail.com>
 --Modified Work Copyright (C) Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
 --Modified Work Copyright (C) 2018 Lokrates
+--Modified Work Copyright (C) BuckarooBanzay
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -19,7 +20,7 @@ end
 
 
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
-biofuel_version = '0.1'
+biofuel_version = '0.3'
 
 biomass = {}
 biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', }
@@ -131,13 +132,13 @@ local function update_timer(pos)
 	local timer = minetest.get_node_timer(pos)
 	local meta = minetest.get_meta(pos)
 	local count = count_input(pos)
-	if not timer:is_started() and count >= 4 then        	  --Input
-		timer:start(2)										  --Timebase
+	if not timer:is_started() and count >= 4 then        	  	--Input
+		timer:start(2)	   					--Timebase
 		meta:set_int('progress', 0)
 		meta:set_string('infotext', S("progress: @1%", "0"))
 		return
 	end
-	if timer:is_started() and count < 4 then     		      --Input
+	if timer:is_started() and count < 4 then     		        --Input
 		timer:stop()
 		meta:set_string('infotext', S("To start fuel production add biomass "))
 		meta:set_int('progress', 0)
@@ -145,7 +146,7 @@ local function update_timer(pos)
 end
 
 local function create_biofuel(pos)
-	local q = 4												  -- Input
+	local q = 4							-- Input
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local stacks = inv:get_list('src')
@@ -298,12 +299,12 @@ minetest.register_node("biofuel:refinery", {
 	description = S("Biofuel Refinery"),
 	drawtype = "nodebox",
 		tiles = {
-			"biofuel_tb.png",       -- top
-			"biofuel_tb.png" .. tube_entry,       -- bottom
-			"biofuel_fr.png",       -- right
-			"biofuel_bl.png",       -- left
-			"biofuel_bl.png",       -- back
-			"biofuel_fr.png"        -- front
+			"biofuel_tb.png" .. tube_entry,  -- top
+			"biofuel_tb.png" .. tube_entry,  -- bottom
+			"biofuel_fr.png",       	 -- right
+			"biofuel_bl.png",       	 -- left
+			"biofuel_bl.png",       	 -- back
+			"biofuel_fr.png"        	 -- front
 		},
 	node_box = {
 		type = "fixed",
@@ -344,12 +345,12 @@ minetest.register_node("biofuel:refinery_active", {
 	description = S("Biofuel Refinery Active"),
 	drawtype = "nodebox",
 		tiles = {
-			"biofuel_tb.png",    		   -- top
-			"biofuel_tb.png" .. tube_entry,      		   -- bottom
-			"biofuel_fr_active.png",       -- right
-			"biofuel_bl_active.png",       -- left
-			"biofuel_bl_active.png",       -- back
-			"biofuel_fr_active.png"        -- front
+			"biofuel_tb.png" .. tube_entry,         -- top
+			"biofuel_tb.png" .. tube_entry,         -- bottom
+			"biofuel_fr_active.png",       		-- right
+			"biofuel_bl_active.png",      		-- left
+			"biofuel_bl_active.png",       		-- back
+			"biofuel_fr_active.png"        		-- front
 		},
 	node_box = {
 		type = "fixed",
