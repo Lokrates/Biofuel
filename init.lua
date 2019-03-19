@@ -4,7 +4,7 @@
 --Original Work Copyright (C) 2016 cd2 (cdqwertz) <cdqwertz@gmail.com>
 --Modified Work Copyright (C) Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
 --Modified Work Copyright (C) 2018 Lokrates
---Modified Work Copyright (C) BuckarooBanzay
+--Modified Work Copyright (C) naturefreshmilk
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -26,24 +26,31 @@ biomass = {}
 biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', }
 biomass.convertible_nodes = {
 	'default:cactus',
+	'default:large_cactus_seedling',
 	'default:papyrus',
 	'default:dry_shrub',
 	'farming:wheat',
 	'farming:seed_wheat',
 	'farming:seed_hemp',
 	'farming:hemp_leaf',
+	'farming:hemp_fibre',
+	'farming:hemp_block',
+	'farming:hemp_rope',
 	'farming:straw',
 	'farming:cotton',
 	'farming:seed_cotton',
+	'farming:seed_barley',
 	'default:marram_grass_1',
 	'default:bush_stem',
 	'default:acacia_bush_stem',
+	'default:pine_bush_stem',
 	'flowers:mushroom_red',
 	'flowers:mushroom_brown',
 	'default:apple',
-	'default:sand_with_kelp',
+	'default:blueberries',
 	'farming:flour',
 	'farming:bread',
+	'default:sand_with_kelp',
 	'farming:string',
 	'pooper:poop_turd',
 	'pooper:poop_pile',
@@ -239,7 +246,7 @@ local tube = {
 		return is_convertible(stack:get_name()) and inv:room_for_item("src", stack)
 	end,
 	input_inventory = "dst",
-	connect_sides = {bottom = 1}
+	connect_sides = {left = 1, right = 1, back = 1, front = 1, bottom = 1, top = 1}
 }
 
 
@@ -324,6 +331,14 @@ minetest.register_node("biofuel:refinery", {
 			{-0.25, 0.3125, -0.25, 0.25, 0.4375, 0.25}, -- NodeBox13
 		}
 	},
+	selection_box = {
+	    type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
+	collision_box = {
+	    type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -370,6 +385,14 @@ minetest.register_node("biofuel:refinery_active", {
 			{-0.25, 0.3125, -0.25, 0.25, 0.4375, 0.25}, -- NodeBox13
 		}
 	},
+	selection_box = {
+	    type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
+	collision_box = {
+	    type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
