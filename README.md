@@ -21,5 +21,5 @@ Other Textures by Lokrates (CC BY-SA 4.0)
 **Installation:**
 
 Minetest 0.4.X: Unzip, rename to 'biofuel' and copy to 'minetest/mod'-folder
-Minetest 5.X:	Unzip and copy to 'minetest/mod'-folder 
-				or install from the Content Database
+
+Minetest 5.X:	Unzip and copy to 'minetest/mod'-folder or install from the Content Database
