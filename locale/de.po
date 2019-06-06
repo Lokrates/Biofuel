@@ -12,42 +12,46 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: de\n"
 
-#: init.lua
+#: refinery.lua
 msgid "loading..."
 msgstr "lade..."
 
-#: init.lua
+#: refinery.lua
 msgid "progress: @1%"
 msgstr "Fortschritt: @1%"
 
-#: init.lua
+#: refinery.lua
 msgid "To start fuel production add biomass "
 msgstr "Zur Treibstoffproduktion mit organischem Material befüllen "
 
-#: init.lua
+#: refinery.lua
 msgid " moves stuff to refinery at "
 msgstr " legte Material in die Raffinerie bei "
 
-#: init.lua
+#: refinery.lua
 msgid " takes stuff from refinery at "
 msgstr " nahm Material aus der Raffinerie bei "
 
-#: init.lua
+#: refinery.lua
 msgid "Biofuel Refinery"
 msgstr "Biotreibstoff Raffinerie"
 
-#: init.lua
+#: refinery.lua
 msgid "Biofuel Refinery Active"
 msgstr "Biotreibstoff Raffinerie arbeitet"
 
-#: init.lua
+#: refinery.lua
 msgid " loaded."
 msgstr " geladen."
 
-#: init.lua
+#: biofuel.lua
 msgid " Bottle Fuel "
 msgstr " Treibstofflasche "
 
-#: init.lua
+#: biofuel.lua
 msgid " Fuel Canister "
 msgstr " Treibstoffkanister "
+
+#: biofuel.lua
+msgid " Phial Fuel "
+msgstr " Treibstoffphiole "
