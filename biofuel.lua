@@ -70,53 +70,63 @@ minetest.register_craft({
 
 --Wine (TenPlus1)
 
-minetest.override_item("wine:bottle_rum", {
-    groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-})
+if minetest.get_modpath("wine") then
+	minetest.override_item("wine:bottle_rum", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "wine:bottle_rum",
-	burntime = 40,
-})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "wine:bottle_rum",
+		burntime = 40,
+	})
 
 
-minetest.override_item("wine:bottle_tequila", {
-    groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-})
+	minetest.override_item("wine:bottle_tequila", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "wine:bottle_tequila",
-	burntime = 40,
-})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "wine:bottle_tequila",
+		burntime = 40,
+	})
+end
 
 --Basic Materials
 
-minetest.override_item("basic_materials:oil_extract", {
-    groups = {biofuel = 1},
-})
+if minetest.get_modpath("basic_materials") then
+	minetest.override_item("basic_materials:oil_extract", {
+		groups = {biofuel = 1},
+	})
+end
 
 --Cucina_Vegana
 
-minetest.override_item("cucina_vegana:sunflower_seeds_oil", {
-    groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
-})
+if minetest.get_modpath("cucina_vegana") then
+	minetest.override_item("cucina_vegana:sunflower_seeds_oil", {
+		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
+	})
 
-minetest.override_item("cucina_vegana:flax_seed_oil", {
-    groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
-})
+	minetest.override_item("cucina_vegana:flax_seed_oil", {
+		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
+	})
 
-minetest.override_item("cucina_vegana:lettuce_oil", {
-    groups = {dig_immediate = 3, attached_node = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
-})
+	minetest.override_item("cucina_vegana:lettuce_oil", {
+		groups = {dig_immediate = 3, attached_node = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
+	})
+end
 
+--[[
 --Farming_Redo
 
-minetest.override_item("farming:bottle_ethanol", {
-    groups = {vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
-})
+if minetest.get_modpath("farming") then
+	minetest.override_item("farming:bottle_ethanol", {
+		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
+	})
 
-minetest.override_item("farming:hemp_oil", {
-    groups = {food_oil = 1, vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
-})
+	minetest.override_item("farming:hemp_oil", {
+		groups = {food_oil = 1, vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
+	})
+end
+]]
