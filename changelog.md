@@ -26,3 +26,6 @@ Version 0.4:
 
 Refinery-Output is now a Phial instead of a bottle.
 
+Version 0.4.1
+-------------
+Temporary fix of dependency error
