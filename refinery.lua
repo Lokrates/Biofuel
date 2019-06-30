@@ -2,9 +2,9 @@
 --Project name: Biofuel, a Mod for Minetest
 --License: General Public License, version 3 or later
 --Original Work Copyright (C) 2016 cd2 (cdqwertz) <cdqwertz@gmail.com>
---Modified Work Copyright (C) Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
---Modified Work Copyright (C) 2018 Lokrates
---Modified Work Copyright (C) naturefreshmilk
+--Modified Work Copyright (C) 2017 Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
+--Modified Work Copyright (C) 2018 - 2019 Lokrates
+--Modified Work Copyright (C) 2018 naturefreshmilk
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -20,21 +20,34 @@ end
 
 
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
-biofuel_version = '0.4'
+biofuel_version = '0.5'
 
 biomass = {}
-biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food' }
-biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',
-							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',
-							'flowers:mushroom_red', 'flowers:mushroom_brown',
-							'farming:wheat', 'farming:straw', 'farming:flour', 'farming:bread',
-							'farming:cotton', 'farming:string',
-							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',
-							'default:apple', 'default:blueberries',
-							'pooper:poop_turd', 'pooper:poop_pile',
-							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 
-							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy',
+biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',
+--							  'eatable', 'food'
 }
+biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',												-- default cactus
+							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
+--							'default:apple', 'default:blueberries',	'farming:flour', 'farming:bread',						-- default food
+							'flowers:mushroom_red', 'flowers:mushroom_brown',												-- mushrooms
+							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',							-- farming
+							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 			-- farming_redo
+--							'farming:barley', 'farming:beans', 'farming:beetroot', 'farming:blueberries','farming:carrot',	-- farming_redo food
+--							'farming:chili_pepper', 'farming:cocoa_beans', 'farming:coffee_beans', 'farming:corn',
+--							'farming:cucumber', 'farming:garlic', 'farming:grapes', 'farming:melon_slice', 'farming:melon_8',
+--							'farming:onion', 'farming:peas', 'farming:peppercorn', 'farming:pepper', 'farming:pineapple',
+--							'farming:potato', 'farming:pumpkin_slice', 'farming:pumpkin', 'farming:raspberries', 
+--							'farming:rhubarb', 'farming:rye', 'farming:oat', 'farming:rice', 'farming:tomato',
+							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default							
+							'pooper:poop_turd', 'pooper:poop_pile',															-- pooper
+							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy'	-- cucina_vegana
+}
+
+
+plants_input = tonumber(minetest.setting_get("biomass_input")) or 4		-- The number of biomass required for fuel production (settingtypes.txt)
+
+bottle_output = minetest.setting_getbool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
+if bottle_output == nil then bottle_output = false end 					-- default false
 
 biomass.convertible_items = {}
 for _, v in pairs(biomass.convertible_nodes) do
@@ -120,13 +133,14 @@ local function update_timer(pos)
 	local timer = minetest.get_node_timer(pos)
 	local meta = minetest.get_meta(pos)
 	local count = count_input(pos)
-	if not timer:is_started() and count >= 4 then        	  	--Input
-		timer:start(2)	   					--Timebase
+	local refinery_time = minetest.setting_get("fuel_production_time") or 10 		-- Timebase (settingtypes.txt)
+	if not timer:is_started() and count >= plants_input then        	  			-- Input
+		timer:start((refinery_time)/5)   											-- Timebase
 		meta:set_int('progress', 0)
 		meta:set_string('infotext', S("progress: @1%", "0"))
 		return
 	end
-	if timer:is_started() and count < 4 then     		        --Input
+	if timer:is_started() and count < plants_input then     		        		-- Input
 		timer:stop()
 		meta:set_string('infotext', S("To start fuel production add biomass "))
 		meta:set_int('progress', 0)
@@ -134,7 +148,7 @@ local function update_timer(pos)
 end
 
 local function create_biofuel(pos)
-	local q = 4							-- Input
+	local q = plants_input															-- Input
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local stacks = inv:get_list('src')
@@ -153,20 +167,24 @@ local function create_biofuel(pos)
 		end
 	end
 	local dirt_count = inv:get_stack('dst', 1):get_count()
+	if bottle_output then
+	inv:set_stack('dst', 1, 'biofuel:bottle_fuel ' .. (dirt_count + 1))
+	else
 	inv:set_stack('dst', 1, 'biofuel:phial_fuel ' .. (dirt_count + 1))
+	end
 end
 
 local function on_timer(pos)
 	local timer = minetest.get_node_timer(pos)
 	local meta = minetest.get_meta(pos)
-	local progress = meta:get_int('progress') + 25  			--Progresss in %
+	local progress = meta:get_int('progress') + 20  							--Progresss in %
 	if progress >= 100 then
 		create_biofuel(pos)
 		meta:set_int('progress', 0)
 	else
 		meta:set_int('progress', progress)
 	end
-	if count_input(pos) >= 4 then								--Input
+	if count_input(pos) >= plants_input then									--Input
 		meta:set_string('infotext', S("progress: @1%", progress))
 		return true
 	else
@@ -180,8 +198,8 @@ end
 local function on_construct(pos)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	inv:set_size('src', 9)                                     -- Input Fields
-	inv:set_size('dst', 4)                                     -- Output Fields
+	inv:set_size('src', 9)                                     					-- Input Fields
+	inv:set_size('dst', 4)                                     					-- Output Fields
 	meta:set_string('infotext', S("To start fuel production add biomass "))
 	meta:set_int('progress', 0)
 end
@@ -292,12 +310,12 @@ minetest.register_node("biofuel:refinery", {
 	description = S("Biofuel Refinery"),
 	drawtype = "nodebox",
 		tiles = {
-			"biofuel_tb.png" .. tube_entry,  -- top
-			"biofuel_tb.png" .. tube_entry,  -- bottom
-			"biofuel_fr.png",       	 -- right
-			"biofuel_bl.png",       	 -- left
-			"biofuel_bl.png",       	 -- back
-			"biofuel_fr.png"        	 -- front
+			"biofuel_tb.png" .. tube_entry, -- top
+			"biofuel_tb.png" .. tube_entry, -- bottom
+			"biofuel_fr.png",       	 	-- right
+			"biofuel_bl.png",       	 	-- left
+			"biofuel_bl.png",       		-- back
+			"biofuel_fr.png"        	 	-- front
 		},
 	node_box = {
 		type = "fixed",
@@ -348,10 +366,10 @@ minetest.register_node("biofuel:refinery_active", {
 		tiles = {
 			"biofuel_tb.png" .. tube_entry,         -- top
 			"biofuel_tb.png" .. tube_entry,         -- bottom
-			"biofuel_fr_active.png",       		-- right
-			"biofuel_bl_active.png",      		-- left
-			"biofuel_bl_active.png",       		-- back
-			"biofuel_fr_active.png"        		-- front
+			"biofuel_fr_active.png",       			-- right
+			"biofuel_bl_active.png",      			-- left
+			"biofuel_bl_active.png",       			-- back
+			"biofuel_fr_active.png"        			-- front
 		},
 	node_box = {
 		type = "fixed",
@@ -406,4 +424,4 @@ minetest.register_craft({
 })
 
 
-minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. (" loaded."))
+minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. S(" loaded."))

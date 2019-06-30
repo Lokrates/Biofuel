@@ -7,9 +7,9 @@ local S, NS = dofile(MP.."/intllib.lua")
 ----------
 
 
---Phial Fuel
+--Vial of Biofuel
 minetest.register_craftitem("biofuel:phial_fuel", {
-	description = S(" Phial Fuel "),
+	description = S("Vial of Biofuel"),
 	inventory_image = "biofuel_phial_fuel.png"
 })
 
@@ -20,10 +20,10 @@ minetest.register_craft({
 })
 
 
---Bottle Fuel
+--Bottle of Biofuel
 
 minetest.register_craftitem("biofuel:bottle_fuel", {
-	description = S(" Bottle Fuel "),
+	description = S("Bottle of Biofuel"),
 	inventory_image = "biofuel_bottle_fuel.png",
 	groups = {biofuel = 1}
 })
@@ -42,10 +42,10 @@ minetest.register_craft({
 })
 
 
---Can Fuel
+--Canister of Biofuel
 
 minetest.register_craftitem("biofuel:fuel_can", {
-	description = S(" Fuel Canister "),
+	description = S("Canister of Biofuel"),
 	inventory_image = "biofuel_fuel_can.png"
 })
 
@@ -68,9 +68,9 @@ minetest.register_craft({
 --Mod compatibility:
 --------------------
 
---Wine (TenPlus1)
+--Wine 
 
-if minetest.get_modpath("wine") then
+if minetest.registered_nodes ["wine:bottle_rum"] then
 	minetest.override_item("wine:bottle_rum", {
 		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
 	})
@@ -80,8 +80,9 @@ if minetest.get_modpath("wine") then
 		recipe = "wine:bottle_rum",
 		burntime = 40,
 	})
+end
 
-
+if minetest.registered_nodes ["wine:bottle_tequila"] then
 	minetest.override_item("wine:bottle_tequila", {
 		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
 	})
@@ -93,40 +94,47 @@ if minetest.get_modpath("wine") then
 	})
 end
 
+
 --Basic Materials
 
-if minetest.get_modpath("basic_materials") then
+if minetest.registered_items ["basic_materials:oil_extract"] then
 	minetest.override_item("basic_materials:oil_extract", {
-		groups = {biofuel = 1},
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
 	})
 end
+
 
 --Cucina_Vegana
 
-if minetest.get_modpath("cucina_vegana") then
+if minetest.registered_items ["cucina_vegana:sunflower_seeds_oil"] then
 	minetest.override_item("cucina_vegana:sunflower_seeds_oil", {
-		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
-	})
-
-	minetest.override_item("cucina_vegana:flax_seed_oil", {
-		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
-	})
-
-	minetest.override_item("cucina_vegana:lettuce_oil", {
-		groups = {dig_immediate = 3, attached_node = 1, food_oil = 1, food_vegan = 1, eatable = 1, biofuel = 1},
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
 	})
 end
 
---[[
+if minetest.registered_items ["cucina_vegana:flax_seed_oil"] then
+	minetest.override_item("cucina_vegana:flax_seed_oil", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+end
+
+if minetest.registered_items ["cucina_vegana:lettuce_oil"] then
+	minetest.override_item("cucina_vegana:lettuce_oil", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+end
+
+
 --Farming_Redo
 
-if minetest.get_modpath("farming") then
+if minetest.registered_items ["farming:bottle_ethanol"] then
 	minetest.override_item("farming:bottle_ethanol", {
-		groups = {vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
-	})
-
-	minetest.override_item("farming:hemp_oil", {
-		groups = {food_oil = 1, vessel = 1, dig_immediate = 3, attached_node = 1, biofuel = 1},
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
 	})
 end
-]]
+
+if minetest.registered_items ["farming:hemp_oil"] then
+	minetest.override_item("farming:hemp_oil", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+end
