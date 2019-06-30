@@ -34,13 +34,13 @@ msgid " loaded."
 msgstr ""
 
 #: biofuel.lua
-msgid " Bottle Fuel "
+msgid "Bottle of Biofuel"
 msgstr ""
 
 #: biofuel.lua
-msgid " Fuel Canister "
+msgid "Canister of Biofuel"
 msgstr ""
 
 #: biofuel.lua
-msgid " Phial Fuel "
+msgid "Vial of Biofuel"
 msgstr ""
