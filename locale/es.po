@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+
+#: refinery.lua
+msgid "loading..."
+msgstr "cargando..."
+
+#: refinery.lua
+msgid "progress: @1%"
+msgstr "progreso: @ 1%"
+
+#: refinery.lua
+msgid "To start fuel production add biomass "
+msgstr "Para iniciar la producción de combustible añadir biomasa."
+
+#: refinery.lua
+msgid " moves stuff to refinery at "
+msgstr " mueve cosas a la refineria en "
+
+#: refinery.lua
+msgid " takes stuff from refinery at "
+msgstr " toma cosas de la refineria en "
+
+#: refinery.lua
+msgid "Biofuel Refinery"
+msgstr "Refinería de biocombustibles"
+
+#: refinery.lua
+msgid "Biofuel Refinery Active"
+msgstr "Refinería de biocombustibles activa"
+
+#: refinery.lua
+msgid " loaded."
+msgstr " cargado."
+
+#: biofuel.lua
+msgid "Bottle of Biofuel"
+msgstr "Botella de biocombustible"
+
+#: biofuel.lua
+msgid "Canister of Biofuel"
+msgstr "Bote de Biocombustible"
+
+#: biofuel.lua
+msgid "Vial of Biofuel"
+msgstr "Vial de Biocombustible"
