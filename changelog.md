@@ -20,11 +20,12 @@ Version 0.4:
 ------------
 [Farming_Redo Ethanol/Hemp-Oil Support](https://forum.minetest.net/viewtopic.php?t=9019)
 
-[ Wine Support Rum/Tequila]  (https://forum.minetest.net/viewtopic.php?f=11&t=13642)
+[Wine Support Rum/Tequila](https://forum.minetest.net/viewtopic.php?f=11&t=13642)
 
-[Cucina Vegana Support Plants/Oil] (https://forum.minetest.net/viewtopic.php?f=9&t=20001)
+[Cucina Vegana Support Plants/Oil](https://forum.minetest.net/viewtopic.php?f=9&t=20001)
 
 Refinery-Output is now a Vial instead of a Bottle.
+
 
 Version 0.4.1:
 -------------
