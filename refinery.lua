@@ -23,11 +23,11 @@ minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.5'
 
 biomass = {}
-biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food' }
+biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', "leafdecay", "leafdecay_drop", "mushroom"}
 biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',												-- default cactus
 							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
 --							'default:apple', 'default:blueberries',	'farming:flour', 'farming:bread',						-- default food
-							'flowers:mushroom_red', 'flowers:mushroom_brown',												-- mushrooms
+--							'flowers:mushroom_red', 'flowers:mushroom_brown',												-- mushrooms
 							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',							-- farming
 							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 			-- farming_redo
 --							'farming:barley', 'farming:beans', 'farming:beetroot', 'farming:blueberries','farming:carrot',	-- farming_redo food
