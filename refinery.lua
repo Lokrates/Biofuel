@@ -103,6 +103,17 @@ local function count_input(pos)
 	return q
 end
 
+local function count_output(pos)
+	local q = 0
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local stacks = inv:get_list('dst')
+	for k in pairs(stacks) do
+		q = q + inv:get_stack('dst', k):get_count()
+	end
+	return q
+end
+
 local function is_empty(pos)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -112,8 +123,11 @@ local function is_empty(pos)
 			return false
 		end
 	end
-	if not inv:get_stack('dst', 1):is_empty() then
-		return false
+	stacks = inv:get_list('dst')
+	for k in pairs(stacks) do
+		if not inv:get_stack('dst', k):is_empty() then
+			return false
+		end
 	end
 	return true
 end
@@ -130,6 +144,15 @@ end
 local function update_timer(pos)
 	local timer = minetest.get_node_timer(pos)
 	local meta = minetest.get_meta(pos)
+	local has_output_space = (4 * 99) > count_output(pos)
+	if not has_output_space then
+		if timer:is_started() then
+			timer:stop()
+			meta:set_string('infotext', S("Output is full "))
+			meta:set_int('progress', 0)
+		end
+		return
+	end
 	local count = count_input(pos)
 	local refinery_time = minetest.setting_get("fuel_production_time") or 10 		-- Timebase (settingtypes.txt)
 	if not timer:is_started() and count >= plants_input then        	  			-- Input
@@ -146,6 +169,7 @@ local function update_timer(pos)
 end
 
 local function create_biofuel(pos)
+	local dirt_count = count_output(pos)
 	local q = plants_input															-- Input
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -164,11 +188,18 @@ local function create_biofuel(pos)
 			end
 		end
 	end
-	local dirt_count = inv:get_stack('dst', 1):get_count()
-	if bottle_output then
-	inv:set_stack('dst', 1, 'biofuel:bottle_fuel ' .. (dirt_count + 1))
-	else
-	inv:set_stack('dst', 1, 'biofuel:phial_fuel ' .. (dirt_count + 1))
+	stacks = inv:get_list('dst')
+	for k in pairs(stacks) do
+		local stack = inv:get_stack('dst', k)
+		local count = stack:get_count()
+		if 99 > count then
+			if bottle_output then
+				inv:set_stack('dst', k, 'biofuel:bottle_fuel ' .. (count + 1))
+			else
+				inv:set_stack('dst', k, 'biofuel:phial_fuel ' .. (count + 1))
+			end
+			break
+		end
 	end
 end
 
@@ -181,6 +212,12 @@ local function on_timer(pos)
 		meta:set_int('progress', 0)
 	else
 		meta:set_int('progress', progress)
+	end
+	if (4 * 99) <= count_output(pos) then
+		timer:stop()
+		meta:set_string('infotext', S("Output is full "))
+		meta:set_int('progress', 0)
+		return false
 	end
 	if count_input(pos) >= plants_input then									--Input
 		meta:set_string('infotext', S("progress: @1%", progress))
