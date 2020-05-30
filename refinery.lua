@@ -23,7 +23,7 @@ minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.5'
 
 biomass = {}
-biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', "leafdecay", "leafdecay_drop", "mushroom"}
+biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', 'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'}
 biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',												-- default cactus
 							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
 --							'default:apple', 'default:blueberries',	'farming:flour', 'farming:bread',						-- default food
@@ -38,7 +38,8 @@ biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',	
 --							'farming:rhubarb', 'farming:rye', 'farming:oat', 'farming:rice', 'farming:tomato',
 							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default							
 							'pooper:poop_turd', 'pooper:poop_pile',															-- pooper
-							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy'	-- cucina_vegana
+							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy',	-- cucina_vegana,
+							'vines:vines', 'vines:vine_end', 'vines:willow_end', 'vines:side_end', 'vines:jungle_end', 'vines:root_end' -- Vines
 }
 
 
