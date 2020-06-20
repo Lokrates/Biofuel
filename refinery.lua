@@ -5,6 +5,8 @@
 --Modified Work Copyright (C) 2017 Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
 --Modified Work Copyright (C) 2018 - 2019 Lokrates
 --Modified Work Copyright (C) 2018 naturefreshmilk
+--Modified Work Copyright (C) 2019 OgelGames
+--Modified Work Copyright (C) 2020 6r1d
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -20,7 +22,7 @@ end
 
 
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
-biofuel_version = '0.5'
+biofuel_version = '0.6'
 
 biomass = {}
 biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', 'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'}
