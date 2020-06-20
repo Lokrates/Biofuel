@@ -23,7 +23,7 @@ minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.5'
 
 biomass = {}
-biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', "leafdecay", "leafdecay_drop", "mushroom"}
+biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', 'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'}
 biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',												-- default cactus
 							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
 --							'default:apple', 'default:blueberries',	'farming:flour', 'farming:bread',						-- default food
@@ -34,11 +34,12 @@ biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',	
 --							'farming:chili_pepper', 'farming:cocoa_beans', 'farming:coffee_beans', 'farming:corn',
 --							'farming:cucumber', 'farming:garlic', 'farming:grapes', 'farming:melon_slice', 'farming:melon_8',
 --							'farming:onion', 'farming:peas', 'farming:peppercorn', 'farming:pepper', 'farming:pineapple',
---							'farming:potato', 'farming:pumpkin_slice', 'farming:pumpkin', 'farming:raspberries', 
+--							'farming:potato', 'farming:pumpkin_slice', 'farming:pumpkin', 'farming:raspberries',
 --							'farming:rhubarb', 'farming:rye', 'farming:oat', 'farming:rice', 'farming:tomato',
-							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default							
+							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default
 							'pooper:poop_turd', 'pooper:poop_pile',															-- pooper
-							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy'	-- cucina_vegana
+							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy',	-- cucina_vegana,
+							'vines:vines' -- Vines
 }
 
 
@@ -64,7 +65,7 @@ local function formspec(pos)
 		'list[current_player;main;0,4.25;8,1;]'..
 		'list[current_player;main;0,5.5;8,3;8]'..
 		'listring[nodemeta:'..spos ..';dst]'..
-		'listring[current_player;main]'..	
+		'listring[current_player;main]'..
 		'listring[nodemeta:'..spos ..';src]'..
 		'listring[current_player;main]'..
 		default.get_hotbar_bg(0, 4.25)
@@ -271,7 +272,7 @@ local tube = {
 		if not convertible then
 			return stack
 		end
-		
+
 		local result = inv:add_item("src", stack)
 		update_timer(pos)
 		update_nodebox(pos)
