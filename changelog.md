@@ -40,3 +40,17 @@ settingtypes.txt for easy configuration added
 api.txt added for easy support of modifications
 
 French, Italian and Spanish translations added with the google translator
+
+Version 0.6
+-----------
+add leafdecay, leafdecay_drop, and mushroom groups 		(OgelGames)
+
+correctly handle output 		(OgelGames)
+
+Adds support for Vines mod 			(6r1d)
+
+"Food Waste"-Option added in the settings menu		(Lokrates)
+
+change from intllib to minetest.translate			(Lokrates)
+
+extended support for cucina_vegana and farming_redo	(Lokrates)
