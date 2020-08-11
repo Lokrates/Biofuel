@@ -3,57 +3,127 @@
 --License: General Public License, version 3 or later
 --Original Work Copyright (C) 2016 cd2 (cdqwertz) <cdqwertz@gmail.com>
 --Modified Work Copyright (C) 2017 Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
---Modified Work Copyright (C) 2018 - 2019 Lokrates
+--Modified Work Copyright (C) 2018 - 2020 Lokrates
 --Modified Work Copyright (C) 2018 naturefreshmilk
 --Modified Work Copyright (C) 2019 OgelGames
 --Modified Work Copyright (C) 2020 6r1d
 
--- Load support for intllib.
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+
+-- Load support for MT game translation.
+local S = minetest.get_translator("biofuel")
+
 
 -- pipeworks compat
 local has_pipeworks = minetest.get_modpath("pipeworks")
 local tube_entry = ""
 
 if has_pipeworks then
-	tube_entry = "^pipeworks_tube_connection_wooden.png"
+	tube_entry = "^pipeworks_tube_connection_metallic.png"
 end
 
 
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.6'
 
+food_fuel = minetest.setting_getbool("food_fuel")				-- Enables the conversion of food into fuel (settingtypes.txt)
+if food_fuel == nil then food_fuel = false end 					-- default false
+
+
 biomass = {}
-biomass.convertible_groups = {'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed', 'eatable', 'food', 'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'}
-biomass.convertible_nodes = {'default:cactus', 'default:large_cactus_seedling',												-- default cactus
+biomass.convertible_groups = {
+								'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',
+								'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'
+							  }
+biomass.convertible_nodes = {
+							'default:cactus', 'default:large_cactus_seedling',												-- default cactus
 							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
---							'default:apple', 'default:blueberries',	'farming:flour', 'farming:bread',						-- default food
---							'flowers:mushroom_red', 'flowers:mushroom_brown',												-- mushrooms
 							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',							-- farming
-							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 			-- farming_redo
---							'farming:barley', 'farming:beans', 'farming:beetroot', 'farming:blueberries','farming:carrot',	-- farming_redo food
---							'farming:chili_pepper', 'farming:cocoa_beans', 'farming:coffee_beans', 'farming:corn',
---							'farming:cucumber', 'farming:garlic', 'farming:grapes', 'farming:melon_slice', 'farming:melon_8',
---							'farming:onion', 'farming:peas', 'farming:peppercorn', 'farming:pepper', 'farming:pineapple',
---							'farming:potato', 'farming:pumpkin_slice', 'farming:pumpkin', 'farming:raspberries',
---							'farming:rhubarb', 'farming:rye', 'farming:oat', 'farming:rice', 'farming:tomato',
+							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 			-- farming_redo hemp
+							'farming:barley', 'farming:jackolantern',
 							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default
 							'pooper:poop_turd', 'pooper:poop_pile',															-- pooper
-							'cucina_vegana:flax', 'cucina_vegana:flax_raw', 'cucina_vegana:sunflower', 'cucina_vegana:soy',	-- cucina_vegana,
-							'vines:vines' -- Vines
+							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',					-- cucina_vegana
+							'cucina_vegana:soy', 'cucina_vegana:chives', 
+							'vines:vines', 'vines:rope', 'vines:rope_block',												-- Vines
+							'trunks:twig_1', 'bushes:BushLeaves1', 'bushes:BushLeaves2', 
+							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:wetreed',
+							}
+
+biomass.convertible_food = {
+							'farming:bread', 'farming:flour',																-- default food
+							'farming:mint_leaf','farming:garlic', 'farming:peas',											-- farming_redo crops
+							'farming:pepper', 'farming:pineapple', 'farming:pineapple_ring', 'farming:potato',
+							'farming:rye', 'farming:oat', 'farming:rice', 'farming:rice_flour', 'farming:blueberry_pie',
+							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato',					-- farming_redo
+							'farming:beetroot_soup', 'farming:bread_slice', 'farming:chili_bowl', 'farming:chocolate_block',
+							'farming:chocolate_dark', 'farming:cookie', 'farming:corn_cob', 'farming:cornstarch',
+							'farming:muffin_blueberry', 'farming:pea_soup', 'farming:potato_salad', 'farming:pumpkin_bread',
+							'farming:pumpkin_dough', 'farming:rhubarb_pie', 'farming:rice_bread', 'farming:toast',
+							'farming:toast_sandwich', 'farming:garlic_braid', 'farming:onion_soup', 
+							'farming:sugar', 'farming:turkish_delight', 'farming:garlic_bread', 'farming:donut',			-- farming_redo food
+							'farming:donut_chocolate', 'farming:donut_apple', 'farming:porridge', 'farming:jaffa_cake',
+							'farming:apple_pie', 'farming:pasta', 'farming:spaghetti', 'farming:bibimbap',
+							'wine:agave_syrup', 																			-- Wine
+							'cucina_vegana:asparagus', 'cucina_vegana:asparagus_hollandaise', 								-- cucina_vegana
+							'cucina_vegana:asparagus_hollandaise_cooked', 'cucina_vegana:asparagus_rice', 'cucina_vegana:asparagus_rice_cooked',
+							'cucina_vegana:asparagus_soup_cooked', 'cucina_vegana:asparagus_soup', 'cucina_vegana:blueberry_jam',
+							'cucina_vegana:blueberry_pot', 'cucina_vegana:blueberry_pot_cooked', 'cucina_vegana:blueberry_puree',
+							'cucina_vegana:bowl_rice', 'cucina_vegana:bowl_rice_cooked', 'cucina_vegana:ciabatta_bread', 
+							'cucina_vegana:ciabatta_dough', 'cucina_vegana:dandelion_honey', 'cucina_vegana:dandelion_suds',
+							'cucina_vegana:dandelion_suds_cooking', 'cucina_vegana:edamame', 'cucina_vegana:edamame_cooked',
+							'cucina_vegana:fish_parsley_rosemary', 'cucina_vegana:fish_parsley_rosemary_cooked', 'cucina_vegana:fryer',
+							'cucina_vegana:fryer_raw', 'cucina_vegana:imitation_butter', 'cucina_vegana:imitation_cheese',
+							'cucina_vegana:imitation_fish', 'cucina_vegana:imitation_meat', 'cucina_vegana:imitation_poultry',
+							'cucina_vegana:kohlrabi', 'cucina_vegana:kohlrabi_roasted', 'cucina_vegana:kohlrabi_soup',
+							'cucina_vegana:kohlrabi_soup_cooked', 'cucina_vegana:lettuce', 'cucina_vegana:molasses', 'cucina_vegana:parsley',
+							'cucina_vegana:peanut', 'cucina_vegana:peanut_butter', 'cucina_vegana:pizza_dough', 'cucina_vegana:pizza_funghi',
+							'cucina_vegana:pizza_funghi_raw', 'cucina_vegana:pizza_vegana', 'cucina_vegana:pizza_vegana_raw',
+							'cucina_vegana:rice', 'cucina_vegana:rice_flour', 'cucina_vegana:rosemary', 'cucina_vegana:salad_bowl', 
+							'cucina_vegana:salad_hollandaise', 'cucina_vegana:sauce_hollandaise', 'cucina_vegana:soy_milk',
+							'cucina_vegana:soy_soup', 'cucina_vegana:soy_soup_cooked', 'cucina_vegana:sunflower_seeds_bread',
+							'cucina_vegana:sunflower_seeds_dough', 'cucina_vegana:sunflower_seeds_flour', 'cucina_vegana:sunflower_seeds_roasted',
+							'cucina_vegana:tofu', 'cucina_vegana:tofu_cooked', 'cucina_vegana:tofu_chives_rosemary',
+							'cucina_vegana:tofu_chives_rosemary_cooked', 'cucina_vegana:vegan_sushi'
 }
 
+
+
+
+
+biomass.convertible_items = {}
+for _, v in pairs(biomass.convertible_nodes) do
+	biomass.convertible_items[v] = true
+end
+
+
+biomass.food_waste = {}
+for _, v in pairs(biomass.convertible_food) do
+	biomass.food_waste[v] = true
+end
+
+
+local function is_convertible(input)
+		if biomass.convertible_items[input] then
+			return true
+		end
+	if food_fuel then
+		if biomass.food_waste[input] then
+			return true
+		end
+	else end
+	for _, v in pairs(biomass.convertible_groups) do
+		if minetest.get_item_group(input, v) > 0 then
+			return true
+		end
+	end
+	return false
+end
 
 plants_input = tonumber(minetest.setting_get("biomass_input")) or 4		-- The number of biomass required for fuel production (settingtypes.txt)
 
 bottle_output = minetest.setting_getbool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
 if bottle_output == nil then bottle_output = false end 					-- default false
 
-biomass.convertible_items = {}
-for _, v in pairs(biomass.convertible_nodes) do
-	biomass.convertible_items[v] = true
-end
 
 local function formspec(pos)
 	local spos = pos.x..','..pos.y..','..pos.z
@@ -74,17 +144,6 @@ local function formspec(pos)
 	return formspec
 end
 
-local function is_convertible(input)
-	if biomass.convertible_items[input] then
-		return true
-	end
-	for _, v in pairs(biomass.convertible_groups) do
-		if minetest.get_item_group(input, v) > 0 then
-			return true
-		end
-	end
-	return false
-end
 
 local function swap_node(pos, name)
 	local node = minetest.get_node(pos)
@@ -462,4 +521,4 @@ minetest.register_craft({
 })
 
 
-minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. S(" loaded."))
+minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. S("loaded."))
