@@ -1,0 +1,12 @@
+# textdomain: biofuel
+loading...=lade...
+progress: @1%=Fortschritt: @1%
+To start fuel production add biomass =Zur Treibstoffproduktion mit organischem Material befüllen 
+moves stuff to refinery at=legte Material in die Raffinerie bei 
+takes stuff from refinery at=nahm Material aus der Raffinerie bei 
+Biofuel Refinery=Biotreibstoff Raffinerie
+Biofuel Refinery Active=Biotreibstoff Raffinerie arbeitet
+loaded.=geladen.
+Bottle of Biofuel=Treibstofflasche
+Canister of Biofuel=Treibstoffkanister
+Vial of Biofuel=Treibstoffphiole

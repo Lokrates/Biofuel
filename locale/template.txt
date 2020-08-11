@@ -1,0 +1,12 @@
+# textdomain: biofuel
+loading...=
+progress: @1%=
+To start fuel production add biomass =
+moves stuff to refinery at=
+takes stuff from refinery at=
+Biofuel Refinery=
+Biofuel Refinery Active=
+loaded.=
+Bottle of Biofuel=
+Canister of Biofuel=
+Vial of Biofuel=
