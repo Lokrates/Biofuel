@@ -1,7 +1,6 @@
+-- Load support for MT game translation.
+local S = minetest.get_translator("biofuel")
 
--- Load support for intllib.
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
 
 --Biofuel:
 ----------
@@ -94,12 +93,48 @@ if minetest.registered_nodes ["wine:bottle_tequila"] then
 	})
 end
 
+if minetest.registered_nodes ["wine:bottle_bourbon"] then
+	minetest.override_item("wine:bottle_bourbon", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "wine:bottle_burbon",
+		burntime = 40,
+	})
+end
+
+if minetest.registered_nodes ["wine:bottle_sake"] then
+	minetest.override_item("wine:bottle_sake", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "wine:bottle_sake",
+		burntime = 40,
+	})
+end
+
+if minetest.registered_nodes ["wine:bottle_vodka"] then
+	minetest.override_item("wine:bottle_vodka", {
+		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+	})
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "wine:bottle_vodka",
+		burntime = 40,
+	})
+end
+
 
 --Basic Materials
 
 if minetest.registered_items ["basic_materials:oil_extract"] then
 	minetest.override_item("basic_materials:oil_extract", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+		groups = {biofuel = 1},
 	})
 end
 
@@ -108,19 +143,25 @@ end
 
 if minetest.registered_items ["cucina_vegana:sunflower_seeds_oil"] then
 	minetest.override_item("cucina_vegana:sunflower_seeds_oil", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
 	})
 end
 
 if minetest.registered_items ["cucina_vegana:flax_seed_oil"] then
 	minetest.override_item("cucina_vegana:flax_seed_oil", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
 	})
 end
 
 if minetest.registered_items ["cucina_vegana:lettuce_oil"] then
 	minetest.override_item("cucina_vegana:lettuce_oil", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
+		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
+	})
+end
+
+if minetest.registered_items ["cucina_vegana:peanut_oil"] then
+	minetest.override_item("cucina_vegana:peanut_oil", {
+		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
 	})
 end
 
