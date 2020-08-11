@@ -7,3 +7,7 @@ biomass_input (required input) int 4 1 99
 #Change of refinery output between vial or bottle
 #Default is vial
 refinery_output (bottle output) bool false
+
+#Enables the conversion of food into fuel
+#Default is disabled
+food_fuel (food waste) bool false
