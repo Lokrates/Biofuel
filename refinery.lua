@@ -25,7 +25,7 @@ end
 minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
 biofuel_version = '0.6'
 
-food_fuel = minetest.setting_getbool("food_fuel")				-- Enables the conversion of food into fuel (settingtypes.txt)
+food_fuel = minetest.settings:get_bool("food_fuel")				-- Enables the conversion of food into fuel (settingtypes.txt)
 if food_fuel == nil then food_fuel = false end 					-- default false
 
 
@@ -119,9 +119,9 @@ local function is_convertible(input)
 	return false
 end
 
-plants_input = tonumber(minetest.setting_get("biomass_input")) or 4		-- The number of biomass required for fuel production (settingtypes.txt)
+plants_input = tonumber(minetest.settings:get("biomass_input")) or 4		-- The number of biomass required for fuel production (settingtypes.txt)
 
-bottle_output = minetest.setting_getbool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
+bottle_output = minetest.settings:get_bool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
 if bottle_output == nil then bottle_output = false end 					-- default false
 
 
@@ -216,7 +216,7 @@ local function update_timer(pos)
 		return
 	end
 	local count = count_input(pos)
-	local refinery_time = minetest.setting_get("fuel_production_time") or 10 		-- Timebase (settingtypes.txt)
+	local refinery_time = minetest.settings:get("fuel_production_time") or 10 		-- Timebase (settingtypes.txt)
 	if not timer:is_started() and count >= plants_input then        	  			-- Input
 		timer:start((refinery_time)/5)   											-- Timebase
 		meta:set_int('progress', 0)
