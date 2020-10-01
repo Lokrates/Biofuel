@@ -71,7 +71,9 @@ local register_biofuel = function(name, burntime)
 	if not minetest.registered_items[name] then
 		return;
 	end
-	minetest.registered_items[name].groups.biofuel = 1
+	local groups = table.copy(minetest.registered_items[name].groups)
+	groups.biofuel = 1
+	minetest.override_item(name, { groups = groups })
 	if burntime and burntime >= 0 then
 		minetest.register_craft({
 			type = "fuel",
