@@ -54,3 +54,5 @@ Adds support for Vines mod 			(6r1d)
 change from intllib to minetest.translate			(Lokrates)
 
 extended support for cucina_vegana and farming_redo	(Lokrates)
+
+refactor biofuel group registration but do not override item groups	(Mazes-80)
