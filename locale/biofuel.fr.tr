@@ -1,8 +1,8 @@
 # textdomain: biofuel
 loading...=chargement...
-progress: @1%=progrès: @ 1%
+progress: @1%=progression: @1%
 To start fuel production add biomass =Pour démarrer la production de carburant, ajoutez de la biomasse
-moves stuff to refinery at= déplace des choses à la raffinerie à 
+moves stuff to refinery at= déplace des choses vers la raffinerie à 
 takes stuff from refinery at= prend des choses de la raffinerie à 
 Biofuel Refinery=Raffinerie de biocarburant
 Biofuel Refinery Active=Raffinerie de biocarburant active

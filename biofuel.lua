@@ -67,115 +67,40 @@ minetest.register_craft({
 --Mod compatibility:
 --------------------
 
+local register_biofuel = function(name, burntime)
+	if not minetest.registered_items[name] then
+		return;
+	end
+	local groups = table.copy(minetest.registered_items[name].groups)
+	groups.biofuel = 1
+	minetest.override_item(name, { groups = groups })
+	if burntime and burntime >= 0 then
+		minetest.register_craft({
+			type = "fuel",
+			recipe = name,
+			burntime = burntime,
+		})
+	end
+end
+
+
 --Wine 
-
-if minetest.registered_nodes ["wine:bottle_rum"] then
-	minetest.override_item("wine:bottle_rum", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "wine:bottle_rum",
-		burntime = 40,
-	})
-end
-
-if minetest.registered_nodes ["wine:bottle_tequila"] then
-	minetest.override_item("wine:bottle_tequila", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "wine:bottle_tequila",
-		burntime = 40,
-	})
-end
-
-if minetest.registered_nodes ["wine:bottle_bourbon"] then
-	minetest.override_item("wine:bottle_bourbon", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "wine:bottle_burbon",
-		burntime = 40,
-	})
-end
-
-if minetest.registered_nodes ["wine:bottle_sake"] then
-	minetest.override_item("wine:bottle_sake", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "wine:bottle_sake",
-		burntime = 40,
-	})
-end
-
-if minetest.registered_nodes ["wine:bottle_vodka"] then
-	minetest.override_item("wine:bottle_vodka", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "wine:bottle_vodka",
-		burntime = 40,
-	})
-end
-
+register_biofuel("wine:bottle_rum", 40)
+register_biofuel("wine:bottle_tequila", 40)
+register_biofuel("wine:bottle_bourbon", 40)
+register_biofuel("wine:bottle_sake", 40)
+register_biofuel("wine:bottle_vodka", 40)
 
 --Basic Materials
-
-if minetest.registered_items ["basic_materials:oil_extract"] then
-	minetest.override_item("basic_materials:oil_extract", {
-		groups = {biofuel = 1},
-	})
-end
+register_biofuel("basic_materials:oil_extract")
 
 
 --Cucina_Vegana
-
-if minetest.registered_items ["cucina_vegana:sunflower_seeds_oil"] then
-	minetest.override_item("cucina_vegana:sunflower_seeds_oil", {
-		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
-	})
-end
-
-if minetest.registered_items ["cucina_vegana:flax_seed_oil"] then
-	minetest.override_item("cucina_vegana:flax_seed_oil", {
-		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
-	})
-end
-
-if minetest.registered_items ["cucina_vegana:lettuce_oil"] then
-	minetest.override_item("cucina_vegana:lettuce_oil", {
-		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
-	})
-end
-
-if minetest.registered_items ["cucina_vegana:peanut_oil"] then
-	minetest.override_item("cucina_vegana:peanut_oil", {
-		groups = {biofuel = 1, vessel = 1, dig_immediate = 3, attached_node = 1, food = 1, food_oil = 1, food_vegan = 1, eatable = 1},
-	})
-end
-
+register_biofuel("cucina_vegana:sunflower_seeds_oil")
+register_biofuel("cucina_vegana:flax_seed_oil")
+register_biofuel("cucina_vegana:lettuce_oil")
+register_biofuel("cucina_vegana:peanut_oil")
 
 --Farming_Redo
-
-if minetest.registered_items ["farming:bottle_ethanol"] then
-	minetest.override_item("farming:bottle_ethanol", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-end
-
-if minetest.registered_items ["farming:hemp_oil"] then
-	minetest.override_item("farming:hemp_oil", {
-		groups = {biofuel = 1, dig_immediate = 3, attached_node = 1, vessel = 1},
-	})
-end
+register_biofuel("farming:bottle_ethanol")
+register_biofuel("farming:hemp_oil")
