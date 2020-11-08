@@ -56,3 +56,5 @@ change from intllib to minetest.translate			(Lokrates)
 extended support for cucina_vegana and farming_redo	(Lokrates)
 
 refactor biofuel group registration but do not override item groups	(Mazes-80)
+
+Adds support for Poisonivy mod 			(Mazes-80)
