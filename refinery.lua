@@ -47,6 +47,7 @@ biomass.convertible_nodes = {
 							'vines:vines', 'vines:rope', 'vines:rope_block',												-- Vines
 							'trunks:twig_1', 'bushes:BushLeaves1', 'bushes:BushLeaves2', 
 							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:wetreed',
+							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
 							}
 
 biomass.convertible_food = {
