@@ -12,6 +12,16 @@
 -- Load support for MT game translation.
 local S = minetest.get_translator("biofuel")
 
+-- hopper compat
+hopper:add_container({
+	{"top", "biofuel:refinery", "dst"},
+	{"bottom", "biofuel:refinery", "src"},
+	{"side", "biofuel:refinery", "src"},
+	{"top", "biofuel:refinery_active", "dst"},
+	{"bottom", "biofuel:refinery_active", "src"},
+	{"side", "biofuel:refinery_active", "src"},
+})
+
 
 -- pipeworks compat
 local has_pipeworks = minetest.get_modpath("pipeworks")
