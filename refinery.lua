@@ -13,14 +13,16 @@
 local S = minetest.get_translator("biofuel")
 
 -- hopper compat
-hopper:add_container({
-	{"top", "biofuel:refinery", "dst"},
-	{"bottom", "biofuel:refinery", "src"},
-	{"side", "biofuel:refinery", "src"},
-	{"top", "biofuel:refinery_active", "dst"},
-	{"bottom", "biofuel:refinery_active", "src"},
-	{"side", "biofuel:refinery_active", "src"},
-})
+if minetest.get_modpath("hopper") then
+	hopper:add_container({
+		{"top", "biofuel:refinery", "dst"},
+		{"bottom", "biofuel:refinery", "src"},
+		{"side", "biofuel:refinery", "src"},
+		{"top", "biofuel:refinery_active", "dst"},
+		{"bottom", "biofuel:refinery_active", "src"},
+		{"side", "biofuel:refinery_active", "src"},
+	})
+end
 
 
 -- pipeworks compat
