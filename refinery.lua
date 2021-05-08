@@ -3,7 +3,7 @@
 --License: General Public License, version 3 or later
 --Original Work Copyright (C) 2016 cd2 (cdqwertz) <cdqwertz@gmail.com>
 --Modified Work Copyright (C) 2017 Vitalie Ciubotaru <vitalie at ciubotaru dot tk>
---Modified Work Copyright (C) 2018 - 2020 Lokrates
+--Modified Work Copyright (C) 2018 - 2021 Lokrates
 --Modified Work Copyright (C) 2018 naturefreshmilk
 --Modified Work Copyright (C) 2019 OgelGames
 --Modified Work Copyright (C) 2020 6r1d
@@ -34,8 +34,8 @@ if has_pipeworks then
 end
 
 
-minetest.log('action', 'MOD: Biofuel ' .. S("loading..."))
-biofuel_version = '0.6'
+minetest.log('action', 'MOD: Biofuel ' .. "loading...")
+biofuel_version = '0.7'
 
 food_fuel = minetest.settings:get_bool("food_fuel")				-- Enables the conversion of food into fuel (settingtypes.txt)
 if food_fuel == nil then food_fuel = false end 					-- default false
@@ -390,14 +390,14 @@ end
 local function on_metadata_inventory_put(pos, listname, index, stack, player)
 	update_timer(pos)
 	update_nodebox(pos)
-	minetest.log('action', player:get_player_name() .. S(" moves stuff to refinery at ") .. minetest.pos_to_string(pos))
+	minetest.log('action', player:get_player_name() .. " moves stuff to refinery at " .. minetest.pos_to_string(pos))
 	return
 end
 
 local function on_metadata_inventory_take(pos, listname, index, stack, player)
 	update_timer(pos)
 	update_nodebox(pos)
-	minetest.log('action', player:get_player_name() .. S(" takes stuff from refinery at ") .. minetest.pos_to_string(pos))
+	minetest.log('action', player:get_player_name() .. " takes stuff from refinery at " .. minetest.pos_to_string(pos))
 	return
 end
 
@@ -534,4 +534,4 @@ minetest.register_craft({
 })
 
 
-minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. S("loaded."))
+minetest.log('action', "MOD: Biofuel version " .. biofuel_version .. " loaded.")

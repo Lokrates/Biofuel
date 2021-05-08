@@ -62,3 +62,8 @@ Adds support for Poisonivy mod 			(Mazes-80)
 New biofuel can texture     (El-Naso)
 
 [Hopper Support : FaceDeer's Version](https://forum.minetest.net/viewtopic.php?t=20058) (Lokrates/OgelGames)
+
+
+Version 0.7
+-----------
+Translation of the logging function removed due to errors	(Lokrates)
