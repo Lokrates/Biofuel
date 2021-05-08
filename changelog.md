@@ -67,3 +67,5 @@ New biofuel can texture     (El-Naso)
 Version 0.7
 -----------
 Translation of the logging function removed due to errors	(Lokrates)
+
+Add use_alpha_texture property	(Lokrates)

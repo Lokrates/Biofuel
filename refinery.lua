@@ -427,6 +427,7 @@ minetest.register_node("biofuel:refinery", {
 			"biofuel_bl.png",       		-- back
 			"biofuel_fr.png"        	 	-- front
 		},
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -481,6 +482,7 @@ minetest.register_node("biofuel:refinery_active", {
 			"biofuel_bl_active.png",       			-- back
 			"biofuel_fr_active.png"        			-- front
 		},
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = {
