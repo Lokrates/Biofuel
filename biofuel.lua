@@ -11,6 +11,12 @@ minetest.register_craftitem("biofuel:phial", {
 	inventory_image = "biofuel_phial.png"
 })
 
+minetest.register_craft({
+	output = "biofuel:phial 4",
+	recipe = {{"default:glass"},
+						{"default:glass"}},
+})
+
 --Vial of Biofuel
 minetest.register_craftitem("biofuel:phial_fuel", {
 	description = S("Vial of Biofuel"),
@@ -54,6 +60,22 @@ minetest.register_craftitem("biofuel:can", {
 	description = S("Empty Canister"),
 	inventory_image = "biofuel_fuel_can.png"
 })
+
+if minetest.get_modpath("technic") then
+	minetest.register_craft({
+		output = "biofuel:can",
+		recipe = {{"technic:water_can"}}
+	})
+else
+	minetest.register_craft({
+		output = "biofuel:can",
+		recipe = {
+			{"default:steel_ingot","default:bronze_ingot","default:steel_ingot"},
+			{"default:steel_ingot","","default:steel_ingot"},
+			{"default:steel_ingot","default:steel_ingot","default:steel_ingot"}
+		},
+	})
+end
 
 minetest.register_craftitem("biofuel:fuel_can", {
 	description = S("Canister of Biofuel"),
