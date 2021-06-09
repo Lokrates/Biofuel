@@ -12,9 +12,15 @@ minetest.register_craftitem("biofuel:phial", {
 })
 
 minetest.register_craft({
-	output = "biofuel:phial 4",
+	output = "biofuel:phial 6",
 	recipe = {{"default:glass"},
 						{"default:glass"}},
+})
+
+minetest.register_craft({
+  type = "shapeless",
+	output = "vessels:glass_fragments",
+	recipe = {"biofuel:phial","biofuel:phial","biofuel:phial"},
 })
 
 --Vial of Biofuel
