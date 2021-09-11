@@ -388,7 +388,7 @@ local tube = {
 		local inv = meta:get_inventory()
 		stack = stack:peek_item(1)
 
-		return (is_convertible(stack:get_name()) or is_vessels(stack:get_name())) and inv:room_for_item("src", stack)
+		return (is_convertible(stack:get_name()) or is_vessel(stack:get_name())) and inv:room_for_item("src", stack)
 	end,
 	input_inventory = "dst",
 	connect_sides = {left = 1, right = 1, back = 1, front = 1, bottom = 1, top = 1}
