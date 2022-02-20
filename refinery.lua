@@ -57,9 +57,8 @@ biomass.convertible_nodes = {
 							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',					-- cucina_vegana
 							'cucina_vegana:soy', 'cucina_vegana:chives', 
 							'vines:vines', 'vines:rope', 'vines:rope_block',												-- Vines
-							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1',
-							'bushes:BushLeaves1', 'bushes:BushLeaves2',
-							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
+							'trunks:twig_1', 'bushes:BushLeaves1', 'bushes:BushLeaves2', 
+							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:wetreed',
 							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
 							}
 
