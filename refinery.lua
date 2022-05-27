@@ -7,7 +7,7 @@
 --Modified Work Copyright (C) 2018 naturefreshmilk
 --Modified Work Copyright (C) 2019 OgelGames
 --Modified Work Copyright (C) 2020 6r1d
---Modified Work Copyright (C) 2021 SFENCE
+--Modified Work Copyright (C) 2021 nixnoxus
 
 
 -- Load support for MT game translation.
@@ -58,8 +58,8 @@ biomass.convertible_nodes = {
 							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',					-- cucina_vegana
 							'cucina_vegana:soy', 'cucina_vegana:chives', 
 							'vines:vines', 'vines:rope', 'vines:rope_block',												-- Vines
-							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1',
-							'bushes:BushLeaves1', 'bushes:BushLeaves2',
+							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1', 
+							'bushes:BushLeaves1', 'bushes:BushLeaves2', 
 							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
 							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
 							}
@@ -139,18 +139,6 @@ plants_input = tonumber(minetest.settings:get("biomass_input")) or 4		-- The num
 bottle_output = minetest.settings:get_bool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
 if bottle_output == nil then bottle_output = false end 					-- default false
 
-local function is_vessel(input)
-	if bottle_output then
-		if (input=="vessels:glass_bottle") then
-			return true
-	  end
-	else
-		if (input=="biofuel:phial") then
-			return true
-	  end
-	end
-	return false
-end
 
 local function formspec(pos)
 	local spos = pos.x..','..pos.y..','..pos.z
@@ -187,10 +175,7 @@ local function count_input(pos)
 	local inv = meta:get_inventory()
 	local stacks = inv:get_list('src')
 	for k in pairs(stacks) do
-		local stack = inv:get_stack('src', k)
-		if (is_vessel(stack:get_name())==false) then
-			q = q + stack:get_count()
-		end
+		q = q + inv:get_stack('src', k):get_count()
 	end
 	return q
 end
@@ -204,18 +189,6 @@ local function count_output(pos)
 		q = q + inv:get_stack('dst', k):get_count()
 	end
 	return q
-end
-
-local function have_vessel(pos)
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	local stacks = inv:get_list('src')
-	for k in pairs(stacks) do
-		if is_vessel(inv:get_stack('src', k):get_name()) then
-			return true
-		end
-	end
-	return false
 end
 
 local function is_empty(pos)
@@ -258,17 +231,16 @@ local function update_timer(pos)
 		return
 	end
 	local count = count_input(pos)
-	local vessel = have_vessel(pos)
 	local refinery_time = minetest.settings:get("fuel_production_time") or 10 		-- Timebase (settingtypes.txt)
-	if not timer:is_started() and count >= plants_input and vessel then        	  			-- Input
+	if not timer:is_started() and count >= plants_input then        	  			-- Input
 		timer:start((refinery_time)/5)   											-- Timebase
 		meta:set_int('progress', 0)
 		meta:set_string('infotext', S("progress: @1%", "0"))
 		return
 	end
-	if timer:is_started() and (count < plants_input or not vessel) then     		        		-- Input
+	if timer:is_started() and count < plants_input then     		        		-- Input
 		timer:stop()
-		meta:set_string('infotext', S("To start fuel production add biomass or vessel"))
+		meta:set_string('infotext', S("To start fuel production add biomass "))
 		meta:set_int('progress', 0)
 	end
 end
@@ -281,7 +253,7 @@ local function create_biofuel(pos)
 	local stacks = inv:get_list('src')
 	for k in pairs(stacks) do
 		local stack = inv:get_stack('src', k)
-		if (not stack:is_empty()) and (not is_vessel(stack:get_name())) then
+		if not stack:is_empty() then
 			local count = stack:get_count()
 			if count <= q then
 				inv:set_stack('src', k, '')
@@ -299,10 +271,8 @@ local function create_biofuel(pos)
 		local count = stack:get_count()
 		if 99 > count then
 			if bottle_output then
-				inv:remove_item('src', ItemStack('vessels:glass_bottle'))
 				inv:set_stack('dst', k, 'biofuel:bottle_fuel ' .. (count + 1))
 			else
-				inv:remove_item('src', ItemStack('biofuel:phial'))
 				inv:set_stack('dst', k, 'biofuel:phial_fuel ' .. (count + 1))
 			end
 			break
@@ -326,12 +296,12 @@ local function on_timer(pos)
 		meta:set_int('progress', 0)
 		return false
 	end
-	if count_input(pos) >= plants_input and have_vessel(pos) then									--Input
+	if count_input(pos) >= plants_input then									--Input
 		meta:set_string('infotext', S("progress: @1%", progress))
 		return true
 	else
 		timer:stop()
-		meta:set_string('infotext', S("To start fuel production add biomass or vessel "))
+		meta:set_string('infotext', S("To start fuel production add biomass "))
 		meta:set_int('progress', 0)
 		return false
 	end
@@ -342,7 +312,7 @@ local function on_construct(pos)
 	local inv = meta:get_inventory()
 	inv:set_size('src', 9)                                     					-- Input Fields
 	inv:set_size('dst', 4)                                     					-- Output Fields
-	meta:set_string('infotext', S("To start fuel production add biomass and vessel "))
+	meta:set_string('infotext', S("To start fuel production add biomass "))
 	meta:set_int('progress', 0)
 end
 
@@ -374,8 +344,8 @@ local tube = {
 	insert_object = function(pos, node, stack, direction)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		local insertable = is_convertible(stack:get_name()) or is_vessel(stack:get_name())
-		if not insertable then
+		local convertible = is_convertible(stack:get_name())
+		if not convertible then
 			return stack
 		end
 
@@ -389,7 +359,7 @@ local tube = {
 		local inv = meta:get_inventory()
 		stack = stack:peek_item(1)
 
-		return (is_convertible(stack:get_name()) or is_vessel(stack:get_name())) and inv:room_for_item("src", stack)
+		return is_convertible(stack:get_name()) and inv:room_for_item("src", stack)
 	end,
 	input_inventory = "dst",
 	connect_sides = {left = 1, right = 1, back = 1, front = 1, bottom = 1, top = 1}
@@ -412,7 +382,7 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 		return 0
 	end
 
-	if listname == 'src' and (is_convertible(stack:get_name()) or is_vessel(stack:get_name())) then
+	if listname == 'src' and is_convertible(stack:get_name()) then
 		return stack:get_count()
 	else
 		return 0
