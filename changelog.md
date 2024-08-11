@@ -88,3 +88,6 @@ ru Translation added (Cpyte-Engine-Developer)
 
 Updates for Farming_redo and Cucina_vegana	(Lokrates)
 
+Version 0.10
+------------
+use "xcompat" instead of "default"
