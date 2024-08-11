@@ -10,6 +10,8 @@
 --Modified Work Copyright (C) 2021 nixnoxus
 --Modified Work Copyright (C) 2021 Niklp09
 
+-- biofuel = {}
+
 -- Load support for MT game translation.
 local S = minetest.get_translator("biofuel")
 
@@ -34,9 +36,12 @@ if has_pipeworks then
 	tube_entry = "^pipeworks_tube_connection_metallic.png"
 end
 
+-- Xcompat								   
+local materials = xcompat.materials
+local sound_api = xcompat.sounds								
 
 minetest.log('action', 'MOD: Biofuel ' .. "loading...")
-biofuel_version = '0.9'
+biofuel_version = '0.10'
 
 food_fuel = minetest.settings:get_bool("food_fuel")				-- Enables the conversion of food into fuel (settingtypes.txt)
 if food_fuel == nil then food_fuel = false end 					-- default false
@@ -48,31 +53,37 @@ biomass.convertible_groups = {
 								'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'
 							  }
 biomass.convertible_nodes = {
-							'default:cactus', 'default:large_cactus_seedling',												-- default cactus
-							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',						-- default bush stem
-							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',							-- farming
-							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 			-- farming_redo hemp
-							'farming:mint_leaf','farming:garlic', 'farming:peas', 'farming:pepper', 						-- farming_redo
+							materials.apple_leaves, materials.apple_log, materials.jungle_leaves, materials.apple_planks, 				-- Xcompat										
+							materials.birch_leaves, materials.birch_log, materials.birch_planks, materials.jungle_leaves, 
+							materials.stick, 
+							'default:cactus', 'default:large_cactus_seedling',															-- default cactus
+							'hades_core:cactus', 'hades_core:large_cactus_seedling',													-- hades cactus	
+							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',									-- default bush stem
+							'hades_core:bush_stem', 'hades_core:pine_bush_stem', 'hades_core:acacia_bush_stem',							-- hades bush stem
+							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',										-- farming
+							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 						-- farming_redo hemp
+							'farming:mint_leaf','farming:garlic', 'farming:peas', 'farming:pepper', 									-- farming_redo
 							'farming:barley', 'farming:jackolantern', 'farming:rye', 'farming:oat', 'farming:rice', 
-							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',		-- default
-							'pooper:poop_turd', 'pooper:poop_pile',															-- pooper
-							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',					-- cucina_vegana
+							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',					-- default
+							'hades_core:papyrus', 'hades_core:dry_shrub', 'hades_core:marram_grass_1', 'hades_core:sand_with_kelp',		--hades core
+							'pooper:poop_turd', 'pooper:poop_pile',																		-- pooper
+							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',								-- cucina_vegana
 							'cucina_vegana:soy', 'cucina_vegana:chives', 'cucina_vegana:corn', 'cucina_vegana:chili',
 							'cucina_vegana:onion', 'cucina_vegana:banana', 'cucina_vegana:carrot', 'cucina_vegana:garlic',
 							'cucina_vegana:potato', 'cucina_vegana:tomato', 'cucina_vegana:cucumber', 'cucina_vegana:strawberry',
 							'cucina_vegana:vine_grape', 'cucina_vegana:coffee_beans_raw',
-							'vines:vines', 'vines:vine', 'vines:rope', 'vines:rope_block',									-- Vines
-							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1', 
+							'vines:vines', 'vines:vine', 'vines:rope', 'vines:rope_block',												-- Vines
+							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1', 										-- Plantlife
 							'bushes:BushLeaves1', 'bushes:BushLeaves2', 
 							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
 							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
 							}
 
 biomass.convertible_food = {
-							'farming:bread', 'farming:flour',																-- default food
+							'farming:bread', 'farming:flour',																			-- default food
 							'farming:pineapple', 'farming:pineapple_ring', 'farming:potato',
 							'farming:rice_flour', 'farming:blueberry_pie',
-							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato',					-- farming_redo
+							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato',								-- farming_redo
 							'farming:beetroot_soup', 'farming:bread_slice', 'farming:chili_bowl', 'farming:chocolate_block',
 							'farming:chocolate_dark', 'farming:cookie', 'farming:corn_cob', 'farming:cornstarch',
 							'farming:muffin_blueberry', 'farming:pea_soup', 'farming:potato_salad', 'farming:pumpkin_bread',
@@ -86,8 +97,8 @@ biomass.convertible_food = {
 							'farming:tofu_cooked', 'farming:tomato_soup', 'farming:cheese_vegan', 'farming:chili_powder',
 							'farming:potato_omelet', 'farming:mac_and_cheese', 'farming:gingerbread_man', 'farming:sunflower_bread',
 							'farming:spanish_potatoes', 'farming:sunflower_seeds_toasted', 
-							'wine:agave_syrup', 																			-- Wine
-							'cucina_vegana:asparagus', 'cucina_vegana:asparagus_hollandaise', 								-- cucina_vegana
+							'wine:agave_syrup', 																						-- Wine
+							'cucina_vegana:asparagus', 'cucina_vegana:asparagus_hollandaise', 											-- cucina_vegana
 							'cucina_vegana:asparagus_hollandaise_cooked', 'cucina_vegana:asparagus_rice', 'cucina_vegana:asparagus_rice_cooked',
 							'cucina_vegana:asparagus_soup_cooked', 'cucina_vegana:asparagus_soup', 'cucina_vegana:blueberry_jam',
 							'cucina_vegana:blueberry_pot', 'cucina_vegana:blueberry_pot_cooked', 'cucina_vegana:blueberry_puree',
@@ -108,9 +119,6 @@ biomass.convertible_food = {
 							'cucina_vegana:tofu', 'cucina_vegana:tofu_cooked', 'cucina_vegana:tofu_chives_rosemary',
 							'cucina_vegana:tofu_chives_rosemary_cooked', 'cucina_vegana:vegan_sushi'
 }
-
-
-
 
 
 biomass.convertible_items = {}
@@ -144,17 +152,16 @@ end
 
 plants_input = tonumber(minetest.settings:get("biomass_input")) or 4		-- The number of biomass required for fuel production (settingtypes.txt)
 
-local bottle_output = minetest.settings:get_bool("refinery_output")				-- Change of refinery output between vial or bottle (settingtypes.txt)
-if bottle_output == nil then bottle_output = false end 					-- default false
-
+local bottle_output = minetest.settings:get_bool("refinery_output")			-- Change of refinery output between vial or bottle (settingtypes.txt)
+if bottle_output == nil then bottle_output = false end 						-- default false
 
 local function formspec(pos)
 	local spos = pos.x..','..pos.y..','..pos.z
 	local formspec =
 		'size[8,8.5]'..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		biofuel.gui_bg..
+		biofuel.gui_bg_img..
+		biofuel.gui_slots..
 		'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
 		'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
 		'list[current_player;main;0,4.25;8,1;]'..
@@ -163,7 +170,7 @@ local function formspec(pos)
 		'listring[current_player;main]'..
 		'listring[nodemeta:'..spos ..';src]'..
 		'listring[current_player;main]'..
-		default.get_hotbar_bg(0, 4.25)
+		biofuel.get_hotbar_bg(0, 4.25)
 	return formspec
 end
 
@@ -466,7 +473,7 @@ minetest.register_node("biofuel:refinery", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	groups = {cracky = 3, oddly_breakable_by_hand=1, tubedevice=1, tubedevice_receiver=1},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = sound_api.node_sound_metal_defaults(),
 	on_timer = on_timer,
 	on_construct = on_construct,
 	on_rightclick = on_rightclick,
@@ -521,7 +528,7 @@ minetest.register_node("biofuel:refinery_active", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	groups = {cracky = 3, oddly_breakable_by_hand=1, not_in_creative_inventory = 1, tubedevice=1, tubedevice_receiver=1},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = sound_api.node_sound_metal_defaults(),
 	on_timer = on_timer,
 	on_construct = on_construct,
 	on_rightclick = on_rightclick,
@@ -537,9 +544,9 @@ minetest.register_node("biofuel:refinery_active", {
 minetest.register_craft({
 	output = "biofuel:refinery",
 	recipe = {
-		{"default:tin_ingot", "default:tin_ingot", "default:tin_ingot"},
-		{"default:glass", "default:glass", "default:glass"},
-		{"default:tin_ingot", "default:tin_ingot", "default:tin_ingot"}
+		{materials.tin_ingot, materials.tin_ingot, materials.tin_ingot},
+		{materials.glass, materials.glass, materials.glass},
+		{materials.tin_ingot, materials.tin_ingot, materials.tin_ingot}
 	}
 })
 
