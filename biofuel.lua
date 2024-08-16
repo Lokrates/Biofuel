@@ -120,12 +120,13 @@ register_biofuel("farming:sunflower_oil")
 --Basic Materials
 register_biofuel("basic_materials:oil_extract")
 
-if minetest.get_modpath("basic_materials") then
+--Hades
+register_biofuel("hades_food:bottle_olive_oil", 40)
 
+if minetest.get_modpath("basic_materials") then
 minetest.register_craft({
 	type = "shapeless",
 	output = "basic_materials:oil_extract 2",
 	recipe = {"biofuel:bottle_fuel", "biofuel:bottle_fuel"}
 })
-
 end
