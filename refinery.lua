@@ -10,7 +10,6 @@
 --Modified Work Copyright (C) 2021 nixnoxus
 --Modified Work Copyright (C) 2021 Niklp09
 
--- biofuel = {}
 
 -- Load support for MT game translation.
 local S = minetest.get_translator("biofuel")
@@ -49,23 +48,32 @@ if food_fuel == nil then food_fuel = false end 					-- default false
 
 biomass = {}
 biomass.convertible_groups = {
-								'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',
-								'leafdecay', 'leafdecay_drop', 'mushroom', 'vines'
+							'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',							-- default
+							'leafdecay', 'leafdecay_drop', 'mushroom', 'vines', 'grass', 
+							'simple_bush', 'bark', 																						-- hades
+							'material_wood', 'compostability',																			-- mineclone
+							'plank', 'trunk', 																							-- farlands reloaded
 							  }
 biomass.convertible_nodes = {
-							materials.apple_leaves, materials.apple_log, materials.jungle_leaves, materials.apple_planks, 				-- Xcompat										
+							materials.apple_leaves, materials.apple_log, materials.jungle_leaves, materials.apple_planks, 				-- xcompat										
 							materials.birch_leaves, materials.birch_log, materials.birch_planks, materials.jungle_leaves, 
 							materials.stick, 
+							'hades_bushes:branch_bush',		-- hades bushes
 							'default:cactus', 'default:large_cactus_seedling',															-- default cactus
-							'hades_core:cactus', 'hades_core:large_cactus_seedling',													-- hades cactus	
+							'hades_core:cactus', 'hades_core:large_cactus_seedling',													-- hades cactus
+							'fl_plantlife:cactus', 																						-- farlands cactus
 							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',									-- default bush stem
 							'hades_core:bush_stem', 'hades_core:pine_bush_stem', 'hades_core:acacia_bush_stem',							-- hades bush stem
 							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',										-- farming
+							'hades_farming:cotton', 'hades_farming:wheat', 'hades_farming:straw',										-- hades farming
+							'hades_waterplants:seaweed', 'hades_waterplants:waterlily', 												-- farlands reloaded
+							'fl_agriculture:carrot', 'fl_agriculture:potato', 'fl_plantlife:raw_mushroom_leaves', 
+							'fl_plantlife:red_mushroom_leaves', 'fl_plantlife:brown_mushroom_leaves', 'fl_plantlife:mushroom_trunk', 
 							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 						-- farming_redo hemp
 							'farming:mint_leaf','farming:garlic', 'farming:peas', 'farming:pepper', 									-- farming_redo
 							'farming:barley', 'farming:jackolantern', 'farming:rye', 'farming:oat', 'farming:rice', 
 							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',					-- default
-							'hades_core:papyrus', 'hades_core:dry_shrub', 'hades_core:marram_grass_1', 'hades_core:sand_with_kelp',		--hades core
+							'hades_core:papyrus', 'hades_core:dry_shrub', 'hades_core:marram_grass_1', 'hades_core:sand_with_kelp',		-- hades core
 							'pooper:poop_turd', 'pooper:poop_pile',																		-- pooper
 							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',								-- cucina_vegana
 							'cucina_vegana:soy', 'cucina_vegana:chives', 'cucina_vegana:corn', 'cucina_vegana:chili',
@@ -77,13 +85,19 @@ biomass.convertible_nodes = {
 							'bushes:BushLeaves1', 'bushes:BushLeaves2', 
 							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
 							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
+							'mcl_cocoas:cocoa_beans', 'mcl_farming:potato_item_poison',	'mcl_mobitems:rotten_flesh', 					-- mineclone
 							}
 
 biomass.convertible_food = {
 							'farming:bread', 'farming:flour',																			-- default food
-							'farming:pineapple', 'farming:pineapple_ring', 'farming:potato',
+							'hades_farming:bread','hades_farming:flour', 'hades_farming:tomato', 'hades_farming:potato',				-- hades farming
+							'hades_farming:strawberry', 'hades_farming:spice', 
+							'hades_food:pie_strawberry_raw', 'hades_food:pie_strawberry', 'hades_food:tomatosalad',
+							'hades_food:tomato_potato_salad', 'hades_food:spiced_potato', 'hades_food:baked_potato',
+							'hades_food:pie_apple_raw', 'hades_food:pie_apple', 
+							'farming:pineapple', 'farming:pineapple_ring', 'farming:potato', 											-- farming_redo
 							'farming:rice_flour', 'farming:blueberry_pie',
-							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato',								-- farming_redo
+							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato', 
 							'farming:beetroot_soup', 'farming:bread_slice', 'farming:chili_bowl', 'farming:chocolate_block',
 							'farming:chocolate_dark', 'farming:cookie', 'farming:corn_cob', 'farming:cornstarch',
 							'farming:muffin_blueberry', 'farming:pea_soup', 'farming:potato_salad', 'farming:pumpkin_bread',
@@ -155,23 +169,82 @@ plants_input = tonumber(minetest.settings:get("biomass_input")) or 4		-- The num
 local bottle_output = minetest.settings:get_bool("refinery_output")			-- Change of refinery output between vial or bottle (settingtypes.txt)
 if bottle_output == nil then bottle_output = false end 						-- default false
 
+
 local function formspec(pos)
 	local spos = pos.x..','..pos.y..','..pos.z
-	local formspec =
-		'size[8,8.5]'..
-		biofuel.gui_bg..
-		biofuel.gui_bg_img..
-		biofuel.gui_slots..
-		'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
-		'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
-		'list[current_player;main;0,4.25;8,1;]'..
-		'list[current_player;main;0,5.5;8,3;8]'..
-		'listring[nodemeta:'..spos ..';dst]'..
-		'listring[current_player;main]'..
-		'listring[nodemeta:'..spos ..';src]'..
-		'listring[current_player;main]'..
-		biofuel.get_hotbar_bg(0, 4.25)
-	return formspec
+	if xcompat.gameid == "mineclonia" then								-- Formspec for Minelonia, Mineclone2, Voxelibre
+		local formspec =
+			'size[9,8.5]'..
+			"listcolors[#9D9D9D;#CBCBCB;#474747;#000000;#FFF]"..
+			'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
+			'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
+			'list[current_player;main;0,4.25;9,3;9]'..
+			'list[current_player;main;0,7.5;9,1;]'..
+			'listring[nodemeta:'..spos ..';dst]'..
+			'listring[current_player;main]'..
+			'listring[nodemeta:'..spos ..';src]'..
+			'listring[current_player;main]'
+		return formspec
+	end
+
+	if xcompat.gameid == "hades_revisited" then							-- Formspec for Hades Revisited
+		local formspec =
+			'size[10,8.5]'..
+			"background[5,5;1,1;hades_gui_inventory.png;true]"..
+			'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
+			'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
+			'list[current_player;main;0,4.25;10,1;]'..
+			'list[current_player;main;0,5.5;10,3;10]'..
+			'listring[nodemeta:'..spos ..';dst]'..
+			'listring[current_player;main]'..
+			'listring[nodemeta:'..spos ..';src]'..
+			'listring[current_player;main]'
+		return formspec
+	end
+	
+	if xcompat.gameid == 'farlands_reloaded' then						-- Formspec for Farlands Reloaded
+		local formspec =
+			'size[9,8.5]'..
+			"background[5,5;1,1;i3_bg_full.png;true]"..
+			"listcolors[#77777750;#777777;#777777;#777;#FFF]"..
+			'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
+			'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
+			'list[current_player;main;0,4.25;9,1;]'..
+			'list[current_player;main;0,5.5;9,3;9]'..
+			'listring[nodemeta:'..spos ..';dst]'..
+			'listring[current_player;main]'..
+			'listring[nodemeta:'..spos ..';src]'..
+			'listring[current_player;main]'
+		return formspec
+	end
+
+	if xcompat.gameid == 'exile' then									-- Formspec for Exile
+		local formspec =
+			'size[8,8.5]'..
+			'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
+			'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
+			'list[current_player;main;0,4.25;8,1;]'..
+			'list[current_player;main;0,5.5;8,3;8]'..
+			'listring[nodemeta:'..spos ..';dst]'..
+			'listring[current_player;main]'..
+			'listring[nodemeta:'..spos ..';src]'..
+			'listring[current_player;main]'
+		return formspec
+	end
+
+	if xcompat.gameid == 'minetest' then								-- Formspec for Minetest and Derviates
+		local formspec =
+			'size[8,8.5]'..
+			'list[nodemeta:'..spos..';src;0.5,0.5;3,3;]'..
+			'list[nodemeta:'..spos..';dst;5,1;2,2;]'..
+			'list[current_player;main;0,4.25;8,1;]'..
+			'list[current_player;main;0,5.5;8,3;8]'..
+			'listring[nodemeta:'..spos ..';dst]'..
+			'listring[current_player;main]'..
+			'listring[nodemeta:'..spos ..';src]'..
+			'listring[current_player;main]'
+		return formspec
+	end
 end
 
 
