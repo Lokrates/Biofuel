@@ -91,3 +91,5 @@ Updates for Farming_redo and Cucina_vegana	(Lokrates)
 Version 0.10
 ------------
 use "xcompat" instead of "default"
+
+formspec adjustments for Mineclonia, Voxelibre, HadesRevisited, Farlands Reloaded and Exile
