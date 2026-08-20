@@ -44,111 +44,108 @@ biofuel_version = '0.10'
 food_fuel = core.settings:get_bool("food_fuel")										-- Enables the conversion of food into fuel (settingtypes.txt)
 if food_fuel == nil then food_fuel = false end 											-- default false
 
-
 biomass = {}
 biomass.convertible_groups = {
-							'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',							-- default
-							'leafdecay', 'leafdecay_drop', 'mushroom', 'vines', 'grass', 
-							'simple_bush', 'bark', 																						-- hades
-							'material_wood', 'compostability',																			-- mineclone
-							'plank', 'trunk', 																							-- farlands reloaded
-							  }
+	'flora', 'leaves', 'flower', 'sapling', 'tree', 'wood', 'stick', 'plant', 'seed',							-- default
+	'leafdecay', 'leafdecay_drop', 'mushroom', 'vines', 'grass', 
+	'simple_bush', 'bark', 'cactus', 'papyrus', 'sugarcane',													-- hades
+	'material_wood', 'compostability',																			-- mineclone
+	'plank', 'trunk', 																							-- farlands reloaded
+	}
 biomass.convertible_nodes = {
-							'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',					-- default
-							'default:cactus', 'default:large_cactus_seedling',															-- default cactus
-							'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',									-- default bush stem
+	'default:papyrus', 'default:dry_shrub', 'default:marram_grass_1', 'default:sand_with_kelp',					-- default
+	'default:cactus', 'default:large_cactus_seedling',															-- default cactus
+	'default:bush_stem', 'default:pine_bush_stem', 'default:acacia_bush_stem',									-- default bush stem
 							
-							'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',										-- farming
+	'farming:cotton', 'farming:string', 'farming:wheat', 'farming:straw',										-- farming
 							
-							'hades_bushes:branch_bush',																					-- hades bushes
-							'hades_core:cactus', 'hades_core:large_cactus_seedling',													-- hades cactus
-							'hades_core:bush_stem', 'hades_core:pine_bush_stem', 'hades_core:acacia_bush_stem',							-- hades bush stem
-							'hades_farming:cotton', 'hades_farming:wheat', 'hades_farming:straw',										-- hades farming
-							'hades_core:papyrus', 'hades_core:dry_shrub', 'hades_core:marram_grass_1', 'hades_core:sand_with_kelp',		-- hades core
-							'hades_waterplants:seaweed', 'hades_waterplants:waterlily',													-- hades waterplants
+	'hades_bushes:branch_bush','hades_bushes:dead', 															-- hades bushes
+	'hades_core:cactus', 'hades_core:large_cactus_seedling',													-- hades cactus
+	'hades_core:bush_stem', 'hades_core:pine_bush_stem', 'hades_core:acacia_bush_stem',							-- hades bush stem
+	'hades_farming:cotton', 'hades_farming:wheat', 'hades_farming:straw',										-- hades farming
+	'hades_core:dry_shrub', 'hades_core:marram_grass_1', 'hades_flowers:dead', 'hades_vines:vines_block',		-- hades core
+	'hades_waterplants:seaweed', 'hades_waterplants:waterlily', 'hades_core:sand_with_kelp',					-- hades waterplants
 							
-							'fl_agriculture:carrot', 'fl_agriculture:potato', 'fl_plantlife:raw_mushroom_leaves', 						-- farlands reloaded
-							'fl_plantlife:red_mushroom_leaves', 'fl_plantlife:brown_mushroom_leaves', 'fl_plantlife:mushroom_trunk',
-							'fl_plantlife:cactus', 																						-- farlands cactus
+	'fl_agriculture:carrot', 'fl_agriculture:potato', 'fl_plantlife:raw_mushroom_leaves', 						-- farlands reloaded
+	'fl_plantlife:red_mushroom_leaves', 'fl_plantlife:brown_mushroom_leaves', 'fl_plantlife:mushroom_trunk',
+	'fl_plantlife:cactus', 																						-- farlands cactus
 							
-							'farming:mint_leaf','farming:garlic', 'farming:peas', 'farming:pepper', 'farming:weed_bale',				-- farming_redo
-							'farming:barley', 'farming:jackolantern', 'farming:rye', 'farming:oat', 'farming:rice', 
-							'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 						-- farming_redo hemp
+	'farming:mint_leaf','farming:garlic', 'farming:peas', 'farming:pepper', 'farming:weed_bale',				-- farming_redo
+	'farming:barley', 'farming:jackolantern', 'farming:rye', 'farming:oat', 'farming:rice', 
+	'farming:hemp_leaf', 'farming:hemp_block', 'farming:hemp_fibre', 'farming:hemp_rope', 						-- farming_redo hemp
 
-							'pooper:poop_turd', 'pooper:poop_pile',																		-- pooper
-							'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',								-- cucina_vegana
-							'cucina_vegana:soy', 'cucina_vegana:chives', 'cucina_vegana:corn', 'cucina_vegana:chili',
-							'cucina_vegana:onion', 'cucina_vegana:banana', 'cucina_vegana:carrot', 'cucina_vegana:garlic',
-							'cucina_vegana:potato', 'cucina_vegana:tomato', 'cucina_vegana:cucumber', 'cucina_vegana:strawberry',
-							'cucina_vegana:vine_grape', 'cucina_vegana:coffee_beans_raw',
-							'vines:vines', 'vines:vine', 'vines:rope', 'vines:rope_block',												-- Vines
-							'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1', 										-- Plantlife
-							'bushes:BushLeaves1', 'bushes:BushLeaves2', 
-							'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
-							'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
-							'mcl_cocoas:cocoa_beans', 'mcl_farming:potato_item_poison',	'mcl_mobitems:rotten_flesh', 					-- mineclone
+	'pooper:poop_turd', 'pooper:poop_pile',																		-- pooper
+	'cucina_vegana:flax', 'cucina_vegana:flax_roasted', 'cucina_vegana:sunflower',								-- cucina_vegana
+	'cucina_vegana:soy', 'cucina_vegana:chives', 'cucina_vegana:corn', 'cucina_vegana:chili',
+	'cucina_vegana:onion', 'cucina_vegana:banana', 'cucina_vegana:carrot', 'cucina_vegana:garlic',
+	'cucina_vegana:potato', 'cucina_vegana:tomato', 'cucina_vegana:cucumber', 'cucina_vegana:strawberry',
+	'cucina_vegana:vine_grape', 'cucina_vegana:coffee_beans_raw',
+	'vines:vines', 'vines:vine', 'vines:rope', 'vines:rope_block',												-- Vines
+	'trunks:moss_plain_0', 'trunks:moss_with_fungus_0', 'trunks:twig_1', 										-- Plantlife
+	'bushes:BushLeaves1', 'bushes:BushLeaves2', 
+	'dryplants:grass', 'dryplants:hay', 'dryplants:reed', 'dryplants:reedmace_sapling', 'dryplants:wetreed',
+	'poisonivy:climbing', 'poisonivy:seedling', 'poisonivy:sproutling',
+	'mcl_cocoas:cocoa_beans', 'mcl_farming:potato_item_poison',	'mcl_mobitems:rotten_flesh', 					-- mineclone
 							
-							'ethereal:bush', 'ethereal:pine_nuts', 'ethereal:vine', 'ethereal:bush2', 'ethereal:seaweed',				-- ethereal
-							'ethereal:mushroom', 'ethereal:slime_mold', 'ethereal:bamboo', 'ethereal:wild_onion_plant',
-							'ethereal:mangrove_roots',  'ethereal:cactus_flower', 'ethereal:fern_tubers',
-							'ethereal:bamboo_moss', 'ethereal:green_moss', 'ethereal:basandra_bush_stem',
-							}
+	'ethereal:bush', 'ethereal:pine_nuts', 'ethereal:vine', 'ethereal:bush2', 'ethereal:seaweed',				-- ethereal
+	'ethereal:mushroom', 'ethereal:slime_mold', 'ethereal:bamboo', 'ethereal:wild_onion_plant',
+	'ethereal:mangrove_roots',  'ethereal:cactus_flower', 'ethereal:fern_tubers',
+	'ethereal:bamboo_moss', 'ethereal:green_moss', 'ethereal:basandra_bush_stem',
+	}
 
 biomass.convertible_food = {
-							'farming:bread', 'farming:flour',																			-- default food
+	'farming:bread', 'farming:flour',																			-- default food
 							
-							'hades_farming:flour', 'hades_farming:bread', 'hades_farming:rice', 'hades_farming:cabbage',				-- hades farming
-							'hades_farming:parsnip', 'hades_farming:tomato', 'hades_farming:potato','hades_farming:strawberry',
-							'hades_farming:bell_pepper', 'hades_farming:spice', 
-							'hades_food:pie_strawberry_raw', 'hades_food:pie_strawberry', 'hades_food:tomatosalad',
-							'hades_food:tomato_potato_salad', 'hades_food:spiced_potato', 'hades_food:baked_potato',
-							'hades_food:pie_apple_raw', 'hades_food:pie_apple', 
+	'hades_farming:flour', 'hades_farming:bread', 'hades_farming:rice', 'hades_farming:cabbage',				-- hades farming
+	'hades_farming:parsnip', 'hades_farming:tomato', 'hades_farming:potato','hades_farming:strawberry',
+	'hades_farming:bell_pepper', 'hades_farming:spice', 
+	'hades_food:pie_strawberry_raw', 'hades_food:pie_strawberry', 'hades_food:tomatosalad',
+	'hades_food:tomato_potato_salad', 'hades_food:spiced_potato', 'hades_food:baked_potato',
+	'hades_food:pie_apple_raw', 'hades_food:pie_apple', 
 							
-							'farming:pineapple', 'farming:pineapple_ring', 'farming:potato', 											-- farming_redo
-							'farming:rice_flour', 'farming:blueberry_pie', 'farming:butter_vegan', 'farming:cinnamon_roll', 
-							'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato', 'farming:egg_vegan',
-							'farming:beetroot_soup', 'farming:bread_slice', 'farming:chili_bowl', 'farming:chocolate_block',
-							'farming:chocolate_dark', 'farming:cookie', 'farming:corn_cob', 'farming:cornstarch',
-							'farming:muffin_blueberry', 'farming:pea_soup', 'farming:potato_salad', 'farming:pumpkin_bread',
-							'farming:pumpkin_dough', 'farming:rhubarb_pie', 'farming:rice_bread', 'farming:toast',
-							'farming:toast_sandwich', 'farming:garlic_braid', 'farming:onion_soup', 
-							'farming:sugar', 'farming:turkish_delight', 'farming:garlic_bread', 'farming:donut',
-							'farming:donut_chocolate', 'farming:donut_apple', 'farming:porridge', 'farming:jaffa_cake',
-							'farming:apple_pie', 'farming:pasta', 'farming:spaghetti', 'farming:bibimbap', 'farming:flan',
-							'farming:tofu', 'farming:gyoza', 'farming:mochi', 'farming:salad', 'farming:burger', 'farming:paella',
-							'farming:caramel', 'farming:onigiri', 'farming:popcorn', 'farming:sugar_cube', 'farming:carrot_gold',
-							'farming:tofu_cooked', 'farming:tomato_soup', 'farming:cheese_vegan', 'farming:chili_powder',
-							'farming:potato_omelet', 'farming:mac_and_cheese', 'farming:gingerbread_man', 'farming:sunflower_bread',
-							'farming:spanish_potatoes', 'farming:sunflower_seeds_toasted', 'farming:jerusalem_artichokes', 
-							'farming:kiwi_sorbet', 
+	'farming:pineapple', 'farming:pineapple_ring', 'farming:potato', 											-- farming_redo
+	'farming:rice_flour', 'farming:blueberry_pie', 'farming:butter_vegan', 'farming:cinnamon_roll', 
+	'farming:bread_multigrain', 'farming:flour_multigrain', 'farming:baked_potato', 'farming:egg_vegan',
+	'farming:beetroot_soup', 'farming:bread_slice', 'farming:chili_bowl', 'farming:chocolate_block',
+	'farming:chocolate_dark', 'farming:cookie', 'farming:corn_cob', 'farming:cornstarch',
+	'farming:muffin_blueberry', 'farming:pea_soup', 'farming:potato_salad', 'farming:pumpkin_bread',
+	'farming:pumpkin_dough', 'farming:rhubarb_pie', 'farming:rice_bread', 'farming:toast',
+	'farming:toast_sandwich', 'farming:garlic_braid', 'farming:onion_soup', 
+	'farming:sugar', 'farming:turkish_delight', 'farming:garlic_bread', 'farming:donut',
+	'farming:donut_chocolate', 'farming:donut_apple', 'farming:porridge', 'farming:jaffa_cake',
+	'farming:apple_pie', 'farming:pasta', 'farming:spaghetti', 'farming:bibimbap', 'farming:flan',
+	'farming:tofu', 'farming:gyoza', 'farming:mochi', 'farming:salad', 'farming:burger', 'farming:paella',
+	'farming:caramel', 'farming:onigiri', 'farming:popcorn', 'farming:sugar_cube', 'farming:carrot_gold',
+	'farming:tofu_cooked', 'farming:tomato_soup', 'farming:cheese_vegan', 'farming:chili_powder',
+	'farming:potato_omelet', 'farming:mac_and_cheese', 'farming:gingerbread_man', 'farming:sunflower_bread',
+	'farming:spanish_potatoes', 'farming:sunflower_seeds_toasted', 'farming:jerusalem_artichokes', 
+	'farming:kiwi_sorbet', 
 
-							'cucina_vegana:asparagus', 'cucina_vegana:asparagus_hollandaise', 											-- cucina_vegana
-							'cucina_vegana:asparagus_hollandaise_cooked', 'cucina_vegana:asparagus_rice', 'cucina_vegana:asparagus_rice_cooked',
-							'cucina_vegana:asparagus_soup_cooked', 'cucina_vegana:asparagus_soup', 'cucina_vegana:blueberry_jam',
-							'cucina_vegana:blueberry_pot', 'cucina_vegana:blueberry_pot_cooked', 'cucina_vegana:blueberry_puree',
-							'cucina_vegana:bowl_rice', 'cucina_vegana:bowl_rice_cooked', 'cucina_vegana:ciabatta_bread', 
-							'cucina_vegana:ciabatta_dough', 'cucina_vegana:dandelion_honey', 'cucina_vegana:dandelion_suds',
-							'cucina_vegana:dandelion_suds_cooking', 'cucina_vegana:edamame', 'cucina_vegana:edamame_cooked',
-							'cucina_vegana:fish_parsley_rosemary', 'cucina_vegana:fish_parsley_rosemary_cooked', 'cucina_vegana:fryer',
-							'cucina_vegana:fryer_raw', 'cucina_vegana:imitation_butter', 'cucina_vegana:imitation_cheese',
-							'cucina_vegana:imitation_fish', 'cucina_vegana:imitation_meat', 'cucina_vegana:imitation_poultry',
-							'cucina_vegana:kohlrabi', 'cucina_vegana:kohlrabi_roasted', 'cucina_vegana:kohlrabi_soup',
-							'cucina_vegana:kohlrabi_soup_cooked', 'cucina_vegana:lettuce', 'cucina_vegana:molasses', 'cucina_vegana:parsley',
-							'cucina_vegana:peanut', 'cucina_vegana:peanut_butter', 'cucina_vegana:pizza_dough', 'cucina_vegana:pizza_funghi',
-							'cucina_vegana:pizza_funghi_raw', 'cucina_vegana:pizza_vegana', 'cucina_vegana:pizza_vegana_raw',
-							'cucina_vegana:rice', 'cucina_vegana:rice_flour', 'cucina_vegana:rosemary', 'cucina_vegana:salad_bowl', 
-							'cucina_vegana:salad_hollandaise', 'cucina_vegana:sauce_hollandaise', 'cucina_vegana:soy_milk',
-							'cucina_vegana:soy_soup', 'cucina_vegana:soy_soup_cooked', 'cucina_vegana:sunflower_seeds_bread',
-							'cucina_vegana:sunflower_seeds_dough', 'cucina_vegana:sunflower_seeds_flour', 'cucina_vegana:sunflower_seeds_roasted',
-							'cucina_vegana:tofu', 'cucina_vegana:tofu_cooked', 'cucina_vegana:tofu_chives_rosemary',
-							'cucina_vegana:tofu_chives_rosemary_cooked', 'cucina_vegana:vegan_sushi', 
+	'cucina_vegana:asparagus', 'cucina_vegana:asparagus_hollandaise', 											-- cucina_vegana
+	'cucina_vegana:asparagus_hollandaise_cooked', 'cucina_vegana:asparagus_rice', 'cucina_vegana:asparagus_rice_cooked',
+	'cucina_vegana:asparagus_soup_cooked', 'cucina_vegana:asparagus_soup', 'cucina_vegana:blueberry_jam',
+	'cucina_vegana:blueberry_pot', 'cucina_vegana:blueberry_pot_cooked', 'cucina_vegana:blueberry_puree',
+	'cucina_vegana:bowl_rice', 'cucina_vegana:bowl_rice_cooked', 'cucina_vegana:ciabatta_bread', 
+	'cucina_vegana:ciabatta_dough', 'cucina_vegana:dandelion_honey', 'cucina_vegana:dandelion_suds',
+	'cucina_vegana:dandelion_suds_cooking', 'cucina_vegana:edamame', 'cucina_vegana:edamame_cooked',
+	'cucina_vegana:fish_parsley_rosemary', 'cucina_vegana:fish_parsley_rosemary_cooked', 'cucina_vegana:fryer',
+	'cucina_vegana:fryer_raw', 'cucina_vegana:imitation_butter', 'cucina_vegana:imitation_cheese',
+	'cucina_vegana:imitation_fish', 'cucina_vegana:imitation_meat', 'cucina_vegana:imitation_poultry',
+	'cucina_vegana:kohlrabi', 'cucina_vegana:kohlrabi_roasted', 'cucina_vegana:kohlrabi_soup',
+	'cucina_vegana:kohlrabi_soup_cooked', 'cucina_vegana:lettuce', 'cucina_vegana:molasses', 'cucina_vegana:parsley',
+	'cucina_vegana:peanut', 'cucina_vegana:peanut_butter', 'cucina_vegana:pizza_dough', 'cucina_vegana:pizza_funghi',
+	'cucina_vegana:pizza_funghi_raw', 'cucina_vegana:pizza_vegana', 'cucina_vegana:pizza_vegana_raw',
+	'cucina_vegana:rice', 'cucina_vegana:rice_flour', 'cucina_vegana:rosemary', 'cucina_vegana:salad_bowl', 
+	'cucina_vegana:salad_hollandaise', 'cucina_vegana:sauce_hollandaise', 'cucina_vegana:soy_milk',
+	'cucina_vegana:soy_soup', 'cucina_vegana:soy_soup_cooked', 'cucina_vegana:sunflower_seeds_bread',
+	'cucina_vegana:sunflower_seeds_dough', 'cucina_vegana:sunflower_seeds_flour', 'cucina_vegana:sunflower_seeds_roasted',
+	'cucina_vegana:tofu', 'cucina_vegana:tofu_cooked', 'cucina_vegana:tofu_chives_rosemary',
+	'cucina_vegana:tofu_chives_rosemary_cooked', 'cucina_vegana:vegan_sushi', 
 					
-							'wine:agave_syrup', 																						-- Wine
+	'wine:agave_syrup', 																						-- Wine
 							
-							'ethereal:candied_lemon', 'ethereal:strawberry', 'ethereal:banana_bread',									-- ethereal
-}
-
-
+	'ethereal:candied_lemon', 'ethereal:strawberry', 'ethereal:banana_bread',									-- ethereal
+	}
 
 biomass.convertible_items = {}
 for _, v in pairs(biomass.convertible_nodes) do
