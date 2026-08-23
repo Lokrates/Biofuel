@@ -1,0 +1,10 @@
+# textdomain: biofuel
+A Minetest Mod to produce biofuel from unused plants.=Minetest мод для виготовлення біопалива з біомаси
+progress: @1%=прогрес: @1%
+To start fuel production add biomass =Додайте біомасу, щоб розпочати виготовлення палива 
+Biofuel Refinery=Переробник Біопалива
+Biofuel Refinery Active=Переробник Біопалива Активний
+Bottle of Biofuel=Пляшка Біопалива
+Canister of Biofuel=Каністра Біопалива
+Output is full =Вихідні слоти заповнені 
+Vial of Biofuel=Флакон Біопалива

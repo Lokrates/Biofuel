@@ -6,4 +6,5 @@ Biofuel Refinery=
 Biofuel Refinery Active=
 Bottle of Biofuel=
 Canister of Biofuel=
+Output is full =
 Vial of Biofuel=
